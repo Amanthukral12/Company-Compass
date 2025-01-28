@@ -32,7 +32,7 @@ model Session {
   deviceInfo   String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  expiredAt    DateTime
+  expiresAt    DateTime
   lastUsedAt   DateTime @default(now())
   company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
