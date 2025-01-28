@@ -1,0 +1,15 @@
+import { Response, NextFunction, Request } from "express";
+
+export interface CustomRequest extends Request {
+  deviceInfo?: string;
+}
+
+export const trackDeviceInfo = (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const userAgent = req.headers["user-agent"] || "Unknown Device";
+  req.deviceInfo = JSON.stringify(userAgent);
+  next();
+};
