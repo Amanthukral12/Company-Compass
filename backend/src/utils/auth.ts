@@ -23,3 +23,17 @@ export const verifyAccessToken = (token: string): AccessTokenPayload | null => {
     return null;
   }
 };
+
+export const verifyRefreshToken = (
+  token: string
+): RefreshTokenPayload | null => {
+  try {
+    return jwt.verify(
+      token,
+      process.env.REFRESH_TOKEN_SECRET!
+    ) as RefreshTokenPayload;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};

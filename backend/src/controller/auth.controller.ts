@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
-import { generateAccessToken, generateRefreshToken } from "../utils/auth";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+} from "../utils/auth";
 import prisma from "../db/db";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
@@ -52,59 +56,135 @@ export const googleLoginSuccess = asyncHandler(
 
 export const getCurrentSession = asyncHandler(
   async (req: Request, res: Response) => {
-    try {
-      if (!req.company) {
-        throw new ApiError(401, "Unauthorized Access. Please login again", [
-          "Unauthorized Access. Please login again",
-        ]);
-      }
-      const currentSession = req.currentSession;
-      const currentCompany = req.company;
-      return res
-        .status(200)
-        .json(
-          new ApiResponse(
-            200,
-            { currentCompany, currentSession },
-            "Fetched current session successfully"
-          )
-        );
-    } catch (error) {
-      throw new ApiError(
-        401,
-        JSON.stringify(error) || "Error fetching current session",
-        ["Error fetching current session"]
-      );
+    if (!req.company) {
+      throw new ApiError(401, "Unauthorized Access. Please login again", [
+        "Unauthorized Access. Please login again",
+      ]);
     }
+    const currentSession = req.currentSession;
+    const currentCompany = req.company;
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { currentCompany, currentSession },
+          "Fetched current session successfully"
+        )
+      );
   }
 );
 
 export const getCurrentCompany = asyncHandler(
   async (req: Request, res: Response) => {
+    if (!req.company) {
+      throw new ApiError(401, "Unauthorized Access. Please login again", [
+        "Unauthorized Access. Please login again",
+      ]);
+    }
+
+    const currentCompany = req.company;
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          currentCompany,
+          "Fetch current company successfully"
+        )
+      );
+  }
+);
+
+export const logout = asyncHandler(async (req: Request, res: Response) => {
+  if (!req.currentSession) {
+    throw new ApiError(401, "No active session", ["No active session"]);
+  }
+
+  await prisma.session.delete({
+    where: { id: req.currentSession.id },
+  });
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  return res
+    .status(200)
+    .clearCookie("access_token", options)
+    .clearCookie("refresh_token", options)
+    .json(new ApiResponse(200, {}, "Logged out successfully"));
+});
+
+export const refreshAccessToken = asyncHandler(
+  async (req: Request, res: Response) => {
+    const incomingRefreshToken =
+      req.cookies?.refresh_token || req.body.refresh_token;
+
+    if (!incomingRefreshToken) {
+      throw new ApiError(401, "Unauthorized request", [
+        "No refresh token provided",
+      ]);
+    }
     try {
-      if (!req.company) {
-        throw new ApiError(401, "Unauthorized Access. Please login again", [
-          "Unauthorized Access. Please login again",
-        ]);
+      const decodedToken = verifyRefreshToken(incomingRefreshToken);
+
+      const session = await prisma.session.findUnique({
+        where: { sessionId: decodedToken?.sessionId },
+        include: { company: true },
+      });
+      const options = {
+        htpOnly: true,
+        secure: true,
+      };
+      if (!session) {
+        res
+          .status(401)
+          .clearCookie("access_token", options)
+          .clearCookie("refresh_token", options);
+        throw new ApiError(401, "Invalid session", ["Invalid session"]);
+      }
+      if (session.expiresAt < new Date()) {
+        await prisma.session.delete({
+          where: { id: session.id },
+        });
+        res
+          .status(401)
+          .clearCookie("access_token", options)
+          .clearCookie("refresh_token", options);
+        throw new ApiError(401, "Session Expired", ["Session Expired"]);
       }
 
-      const currentCompany = req.company;
+      const accessToken = generateAccessToken({
+        companyId: session.companyId,
+        sessionId: session.sessionId,
+      });
 
-      return res
+      await prisma.session.update({
+        where: { id: session.id },
+        data: { lastUsedAt: new Date() },
+      });
+
+      res
         .status(200)
-        .json(
-          new ApiResponse(
-            200,
-            currentCompany,
-            "Fetch current company successfully"
-          )
-        );
+        .cookie("access_token", accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          maxAge: 15 * 60 * 1000,
+        })
+        .json(new ApiResponse(200, { accessToken }, "Access token refreshed"));
     } catch (error) {
-      throw new ApiError(
-        401,
-        JSON.stringify(error) || "Error fetching current company",
-        ["Error fetching current company"]
-      );
+      console.log(error);
+      const options = {
+        httpOnly: true,
+        secure: true,
+      };
+      res.clearCookie("access_token", options);
+      res.clearCookie("refresh_token", options);
+      throw new ApiError(401, "Invalid refresh token", [
+        "Invalid refresh token",
+      ]);
     }
   }
 );

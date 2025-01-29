@@ -4,6 +4,8 @@ import {
   getCurrentCompany,
   getCurrentSession,
   googleLoginSuccess,
+  logout,
+  refreshAccessToken,
 } from "../controller/auth.controller";
 import { trackDeviceInfo } from "../middleware/deviceInfo";
 import { authenticateSession } from "../middleware/auth";
@@ -24,5 +26,7 @@ router.get(
 
 router.route("/auth/session").get(authenticateSession, getCurrentSession);
 router.route("/auth/profile").get(authenticateSession, getCurrentCompany);
+router.route("/auth/logout").post(authenticateSession, logout);
+router.route("/auth/refresh-token").post(refreshAccessToken);
 
 export default router;
