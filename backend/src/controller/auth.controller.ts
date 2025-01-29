@@ -1,8 +1,9 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import { generateAccessToken, generateRefreshToken } from "../utils/auth";
 import prisma from "../db/db";
 import { ApiError } from "../utils/ApiError";
+import { ApiResponse } from "../utils/ApiResponse";
 
 export const googleLoginSuccess = asyncHandler(
   async (req: any, res: Response) => {
@@ -45,6 +46,65 @@ export const googleLoginSuccess = asyncHandler(
       throw new ApiError(401, JSON.stringify(error) || "Error logging in", [
         "Error logging in",
       ]);
+    }
+  }
+);
+
+export const getCurrentSession = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      if (!req.company) {
+        throw new ApiError(401, "Unauthorized Access. Please login again", [
+          "Unauthorized Access. Please login again",
+        ]);
+      }
+      const currentSession = req.currentSession;
+      const currentCompany = req.company;
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            { currentCompany, currentSession },
+            "Fetched current session successfully"
+          )
+        );
+    } catch (error) {
+      throw new ApiError(
+        401,
+        JSON.stringify(error) || "Error fetching current session",
+        ["Error fetching current session"]
+      );
+    }
+  }
+);
+
+export const getCurrentCompany = asyncHandler(
+  async (req: Request, res: Response) => {
+    try {
+      if (!req.company) {
+        throw new ApiError(401, "Unauthorized Access. Please login again", [
+          "Unauthorized Access. Please login again",
+        ]);
+      }
+
+      const currentCompany = req.company;
+
+      return res
+        .status(200)
+        .json(
+          new ApiResponse(
+            200,
+            currentCompany,
+            "Fetch current company successfully"
+          )
+        );
+    } catch (error) {
+      throw new ApiError(
+        401,
+        JSON.stringify(error) || "Error fetching current company",
+        ["Error fetching current company"]
+      );
     }
   }
 );

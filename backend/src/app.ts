@@ -4,6 +4,7 @@ import passport from "./config/passport";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
+import authRoutes from "./routes/auth.routes";
 const app = express();
 dotenv.config();
 
@@ -28,4 +29,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/", authRoutes);
 export default app;
