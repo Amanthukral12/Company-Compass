@@ -12,17 +12,17 @@ import { ApiResponse } from "../utils/ApiResponse";
 export const googleLoginSuccess = asyncHandler(
   async (req: any, res: Response) => {
     try {
-      const { company } = req.company;
+      const { company } = req.user;
       const deviceInfo = req.deviceInfo;
       const refreshToken = generateRefreshToken({
-        sessionId: req.company.sessionId,
+        sessionId: req.user.sessionId,
       });
       const session = await prisma.session.create({
         data: {
           companyId: company.id,
           refreshToken,
           deviceInfo,
-          sessionId: req.company.sessionId,
+          sessionId: req.user.sessionId,
           expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         },
       });
@@ -46,10 +46,11 @@ export const googleLoginSuccess = asyncHandler(
         })
         .redirect(process.env.FRONTEND_URL!);
     } catch (error) {
-      console.log(error);
-      throw new ApiError(401, JSON.stringify(error) || "Error logging in", [
-        "Error logging in",
-      ]);
+      if (error instanceof Error) {
+        throw new ApiError(401, error.message || "Error logging in", [
+          "Error logging in",
+        ]);
+      }
     }
   }
 );
