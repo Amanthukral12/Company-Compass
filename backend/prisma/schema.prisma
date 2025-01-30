@@ -14,14 +14,15 @@ datasource db {
 }
 
 model Company {
-  id        Int       @id @default(autoincrement())
-  googleId  String    @unique
-  email     String    @unique
+  id        Int        @id @default(autoincrement())
+  googleId  String     @unique
+  email     String     @unique
   name      String
   avatar    String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   sessions  Session[]
+  employees Employee[]
 }
 
 model Session {
@@ -35,4 +36,63 @@ model Session {
   expiresAt    DateTime
   lastUsedAt   DateTime @default(now())
   company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Employee {
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String
+  companyId     Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  company       Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  salaryHistory SalaryHistory[]
+  attendance    Attendance[]
+  payment       Payment[]
+
+  @@index([email, companyId])
+}
+
+model SalaryHistory {
+  id         Int       @id @default(autoincrement())
+  employeeId Int
+  hourlyRate Float
+  startDate  DateTime  @db.Date
+  endDate    DateTime? @db.Date
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  employee   Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, startDate, endDate])
+}
+
+model Attendance {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @db.Date
+  startTime  DateTime
+  endTime    DateTime
+  hours      Float
+  employeeId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, date])
+}
+
+model Payment {
+  id          Int         @id @default(autoincrement())
+  amount      Float
+  type        PaymentType
+  month       DateTime    @db.Date
+  employeeId  Int
+  description String?
+  createdAt   DateTime    @default(now())
+  updateAt    DateTime    @updatedAt
+  employee    Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentType {
+  FULL
+  ADVANCE
 }
