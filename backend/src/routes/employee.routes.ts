@@ -7,6 +7,7 @@ import {
   getEmployeeById,
   updateEmployee,
 } from "../controller/employee.controller";
+import { addSalaryHistory } from "../controller/salaryHistory.controller";
 
 const router = Router();
 
@@ -17,5 +18,8 @@ router
   .get(authenticateSession, getEmployeeById)
   .delete(authenticateSession, deleteEmployee)
   .put(authenticateSession, updateEmployee);
+router
+  .route("/:employeeId/salaryHistory/add")
+  .post(authenticateSession, addSalaryHistory);
 
 export default router;

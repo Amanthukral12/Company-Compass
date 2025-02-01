@@ -42,6 +42,8 @@ model Employee {
   id            Int             @id @default(autoincrement())
   name          String
   phoneNumber   String
+  joinDate      DateTime        @default(now())
+  status        EmployeeStatus  @default(ACTIVE)
   companyId     Int
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -56,6 +58,7 @@ model Employee {
 model SalaryHistory {
   id         Int       @id @default(autoincrement())
   employeeId Int
+  companyId  Int
   hourlyRate Float
   startDate  DateTime  @db.Date
   endDate    DateTime? @db.Date
@@ -67,17 +70,19 @@ model SalaryHistory {
 }
 
 model Attendance {
-  id         Int      @id @default(autoincrement())
-  date       DateTime @db.Date
+  id         Int              @id @default(autoincrement())
+  date       DateTime         @db.Date
   startTime  DateTime
   endTime    DateTime
   hours      Float
+  status     AttendanceStatus
   employeeId Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  employee   Employee         @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 
   @@unique([employeeId, date])
+  @@index([date])
 }
 
 model Payment {
@@ -88,11 +93,22 @@ model Payment {
   employeeId  Int
   description String?
   createdAt   DateTime    @default(now())
-  updateAt    DateTime    @updatedAt
+  updatedAt   DateTime    @updatedAt
   employee    Employee    @relation(fields: [employeeId], references: [id], onDelete: Cascade)
 }
 
 enum PaymentType {
   FULL
   ADVANCE
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
 }
