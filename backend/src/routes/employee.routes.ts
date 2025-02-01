@@ -4,7 +4,7 @@ import {
   createEmployee,
   deleteEmployee,
   getAllEmployees,
-  getEmployeeById,
+  getEmployeeOverView,
   updateEmployee,
 } from "../controller/employee.controller";
 import {
@@ -20,7 +20,7 @@ router.route("/add").post(authenticateSession, createEmployee);
 router.route("/").get(authenticateSession, getAllEmployees);
 router
   .route("/:employeeId")
-  .get(authenticateSession, getEmployeeById)
+  .get(authenticateSession, getEmployeeOverView)
   .delete(authenticateSession, deleteEmployee)
   .put(authenticateSession, updateEmployee);
 router
