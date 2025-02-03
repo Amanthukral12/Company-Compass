@@ -180,7 +180,7 @@ export const updateAttendance = asyncHandler(
         date: date ? date : undefined,
         startTime: startTime ? startTime : undefined,
         endTime: endTime ? endTime : undefined,
-        hours: hours ? hours : undefined,
+        hours: hours !== undefined ? hours : undefined,
         status: status ? status : undefined,
       },
     });

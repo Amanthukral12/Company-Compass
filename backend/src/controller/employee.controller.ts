@@ -79,25 +79,37 @@ export const getEmployeeOverView = asyncHandler(
     }
 
     const allMonthlySummaries = await prisma.$queryRaw`
-    Select 
-    to_char(DATE_TRUNC('month', date), 'Month') as monthName,
-    EXTRACT(MONTH FROM date) as monthNumber,
-    COUNT(*) as totalDays,
-    SUM(hours) as totalHours,
-    COUNT(CASE WHEN status='PRESENT' THEN 1 END) as presentDays,
-    COUNT(CASE WHEN status='ABSENT' THEN 1 END) as absentDays,
-    COUNT(CASE WHEN status='HALF_DAY' THEN 1 END) as halfDays,
-    COUNT(CASE WHEN status='LEAVE' THEN 1 END) as leaveDays
+    SELECT 
+        to_char(DATE_TRUNC('month', date), 'FMMonth') AS monthName, -- 'FM' removes extra spaces
+        EXTRACT(MONTH FROM date) AS monthNumber,
+        COUNT(*) AS totalDays,
+        SUM(hours) AS totalHours,
+        COUNT(CASE WHEN status='PRESENT' THEN 1 END) AS presentDays,
+        COUNT(CASE WHEN status='ABSENT' THEN 1 END) AS absentDays,
+        COUNT(CASE WHEN status='HALF_DAY' THEN 1 END) AS halfDays,
+        COUNT(CASE WHEN status='LEAVE' THEN 1 END) AS leaveDays
     FROM "Attendance"
-    where
-    "employeeId" = ${Number(employeeId)}
-    AND EXTRACT(YEAR FROM date) = ${currentYear}
+    WHERE
+        "employeeId" = ${Number(employeeId)}
+        AND EXTRACT(YEAR FROM date) = ${currentYear}
     GROUP BY DATE_TRUNC('month', date), EXTRACT(MONTH FROM date)
-    ORDER BY DATE_TRUNC('month', date) ASC
-    `;
+    ORDER BY DATE_TRUNC('month', date) ASC;
+`;
 
-    const currentMonthSummary = (allMonthlySummaries as any).find(
-      (summary: any) => summary.monthNumber === currentMonth
+    const formattedSummaries = (allMonthlySummaries as any).map(
+      (summary: any) => ({
+        ...summary,
+        totaldays: Number(summary.totaldays),
+        totalhours: Number(summary.totalhours),
+        presentdays: Number(summary.presentdays),
+        absentdays: Number(summary.absentdays),
+        halfdays: Number(summary.halfdays),
+        leavedays: Number(summary.leavedays),
+      })
+    );
+
+    const currentMonthSummary = (formattedSummaries as any).find(
+      (summary: any) => Number(summary.monthnumber) === currentMonth
     ) || {
       monthName: new Date(currentYear, currentMonth - 1).toLocaleString(
         "default",
@@ -112,8 +124,8 @@ export const getEmployeeOverView = asyncHandler(
       leaveDays: 0,
     };
 
-    const otherMonths = (allMonthlySummaries as any).filter(
-      (summary: any) => summary.monthNumber !== currentMonth
+    const otherMonths = (formattedSummaries as any).filter(
+      (summary: any) => Number(summary.monthnumber) !== currentMonth
     );
 
     return res
