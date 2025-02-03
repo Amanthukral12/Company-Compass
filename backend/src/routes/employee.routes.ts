@@ -13,6 +13,7 @@ import {
   getAllSalaryHistoryForEmployee,
   updateSalaryHistory,
 } from "../controller/salaryHistory.controller";
+import { getMonthlyAttendance } from "../controller/attendance.controller";
 
 const router = Router();
 
@@ -33,5 +34,8 @@ router
   .route("/:employeeId/salaryHistory/:salaryHistoryId")
   .delete(authenticateSession, deleteSalaryHistory)
   .put(authenticateSession, updateSalaryHistory);
+router
+  .route("/:employeeId/attendance/:year/:month")
+  .get(authenticateSession, getMonthlyAttendance);
 
 export default router;

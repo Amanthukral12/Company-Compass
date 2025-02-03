@@ -6,6 +6,7 @@ import session from "express-session";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import employeeRoutes from "./routes/employee.routes";
+import attendanceRoutes from "./routes/attendance.routes";
 const app = express();
 dotenv.config();
 
@@ -33,4 +34,5 @@ app.use(passport.session());
 
 app.use("/", authRoutes);
 app.use("/employee", employeeRoutes);
+app.use("/attendance", attendanceRoutes);
 export default app;
