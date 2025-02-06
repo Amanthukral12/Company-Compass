@@ -7,7 +7,8 @@ import {
 } from "react";
 import { authReducer } from "../reducers/AuthReducer";
 import { AuthState } from "../types/types";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import api from "../utils/api";
 
 interface AuthContextProps extends AuthState {
   login: () => Promise<void>;
@@ -38,7 +39,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchCompanyData = async () => {
     try {
-      const res = await axios.get("/auth/session");
+      const res = await api.get("/auth/session");
       authDispatch({ type: "LOAD_SESSION", payload: res.data });
       return res;
     } catch (error) {
