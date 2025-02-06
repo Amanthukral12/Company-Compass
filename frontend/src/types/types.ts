@@ -41,3 +41,23 @@ export type AuthAction =
   | { type: "LOGIN_ERROR"; payload: string }
   | { type: "LOAD_SESSION"; payload: CustomSession }
   | { type: "LOGOUT" };
+
+export interface Employee {
+  id: number;
+  name: string;
+  phoneNumber: string;
+  companyId: number;
+  status: string;
+  joinDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  company: Company;
+}
+
+export interface EmployeeState {
+  employees: Employee[] | [];
+  loading: boolean;
+  error: string | null;
+}
+
+export type EmployeeAction = { type: "FETCH_EMPLOYEES"; payload: Employee[] };

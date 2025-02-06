@@ -13,6 +13,8 @@ import AuthProvider from "./context/AuthProvider.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import Home from "./pages/Home.tsx";
 import PrivateRoute2 from "./components/PrivateRoute2.tsx";
+import Profile from "./pages/Profile.tsx";
+import EmployeeProvider from "./context/EmployeeProvider.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +24,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="" element={<PrivateRoute />}>
         <Route index={true} path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Route>
   )
@@ -30,7 +33,9 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <EmployeeProvider>
+        <RouterProvider router={router} />
+      </EmployeeProvider>
     </AuthProvider>
   </StrictMode>
 );

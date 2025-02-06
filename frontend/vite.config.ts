@@ -6,7 +6,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/auth": {
-        target: "http://localhost:8000", // Backend URL
+        target: "http://localhost:8000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/employee": {
+        target: "http://localhost:8000",
         changeOrigin: true,
         secure: false,
       },
