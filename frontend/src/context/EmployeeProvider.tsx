@@ -2,7 +2,7 @@ import { ReactNode, useReducer } from "react";
 import api from "../utils/api";
 import { EmployeeContext } from "./EmployeeContext";
 import { EmployeeReducer } from "../reducers/EmployeeReducer";
-import { EmployeeState } from "../types/types";
+import { Employee, EmployeeState } from "../types/types";
 
 const employeeInitialState: EmployeeState = {
   employees: [],
@@ -19,7 +19,51 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
     try {
       const res = await api.get("/employee/");
       employeeDispatch({ type: "FETCH_EMPLOYEES", payload: res.data.data });
-      console.log(res.data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createEmployee = async (formData: Employee) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.post("/employee/add", formData, config);
+      employeeDispatch({ type: "CREATE_EMPLOYEE", payload: res.data.data });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateEmployee = async (formData: Employee) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.put(`/employee/${formData.id}`, formData, config);
+      employeeDispatch({ type: "UPDATE_EMPLOYEE", payload: res.data.data });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteEmployee = async (id: number) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.delete(`/employee/${id}`, config);
+      employeeDispatch({ type: "DELETE_EMPLOYEE", payload: id });
       return res;
     } catch (error) {
       console.log(error);
@@ -29,6 +73,9 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
     <EmployeeContext.Provider
       value={{
         fetchAllEmployees,
+        createEmployee,
+        updateEmployee,
+        deleteEmployee,
         employees: employeeState.employees,
         loading: employeeState.loading,
         error: employeeState.error,

@@ -60,4 +60,8 @@ export interface EmployeeState {
   error: string | null;
 }
 
-export type EmployeeAction = { type: "FETCH_EMPLOYEES"; payload: Employee[] };
+export type EmployeeAction =
+  | { type: "FETCH_EMPLOYEES"; payload: Employee[] }
+  | { type: "CREATE_EMPLOYEE"; payload: Employee }
+  | { type: "UPDATE_EMPLOYEE"; payload: Employee }
+  | { type: "DELETE_EMPLOYEE"; payload: number };

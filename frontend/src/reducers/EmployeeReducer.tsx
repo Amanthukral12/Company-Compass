@@ -12,7 +12,31 @@ export const EmployeeReducer = (
         employees: action.payload,
         error: null,
       };
-
+    case "CREATE_EMPLOYEE":
+      return {
+        ...state,
+        loading: false,
+        employees: [...state.employees, action.payload],
+        error: null,
+      };
+    case "UPDATE_EMPLOYEE":
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        employees: state.employees.map((employee) =>
+          employee.id === action.payload.id ? action.payload : employee
+        ),
+      };
+    case "DELETE_EMPLOYEE":
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        employees: state.employees.filter(
+          (employee) => employee.id !== action.payload
+        ),
+      };
     default:
       return state;
   }
