@@ -47,7 +47,6 @@ export const EmployeeReducer = (
         loading: false,
         error: null,
         employee: action.payload,
-        employees: [],
       };
     default:
       return state;

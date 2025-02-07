@@ -15,6 +15,7 @@ import Home from "./pages/Home.tsx";
 import PrivateRoute2 from "./components/PrivateRoute2.tsx";
 import Profile from "./pages/Profile.tsx";
 import EmployeeProvider from "./context/EmployeeProvider.tsx";
+import SalaryHistoryProvider from "./context/SalaryHistoryProvider.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,7 +35,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
       <EmployeeProvider>
-        <RouterProvider router={router} />
+        <SalaryHistoryProvider>
+          <RouterProvider router={router} />
+        </SalaryHistoryProvider>
       </EmployeeProvider>
     </AuthProvider>
   </StrictMode>

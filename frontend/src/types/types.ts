@@ -52,6 +52,26 @@ export interface Employee {
   createdAt: Date;
   updatedAt: Date;
   company: Company;
+  salaryHistory: SalaryHistory[];
+}
+
+export interface SalaryHistory {
+  id: number;
+  employeeId: number;
+  companyId: number;
+  hourlyRate: number;
+  startDate: Date;
+  endDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  employee: Employee;
+}
+
+export interface SalaryHistoryState {
+  salaryHistories: SalaryHistory[] | [];
+  salaryHistory: SalaryHistory | null;
+  loading: boolean;
+  error: string | null;
 }
 
 export interface EmployeeState {
@@ -84,3 +104,13 @@ export type EmployeeAction =
   | { type: "UPDATE_EMPLOYEE"; payload: Employee }
   | { type: "DELETE_EMPLOYEE"; payload: number }
   | { type: "FETCH_EMPLOYEE"; payload: EmployeeOverview };
+
+export type SalaryHistoryAction =
+  | {
+      type: "FETCH_SALARY_HISTORIES";
+      payload: SalaryHistory[];
+    }
+  | { type: "CREATE_SALARY_HISTORY"; payload: SalaryHistory }
+  | { type: "UPDATE_SALARY_HISTORY"; payload: SalaryHistory }
+  | { type: "DELETE_SALARY_HISTORY"; payload: number }
+  | { type: "FETCH_SALARY_HISTORY"; payload: SalaryHistory };
