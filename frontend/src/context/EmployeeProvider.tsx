@@ -6,6 +6,7 @@ import { Employee, EmployeeState } from "../types/types";
 
 const employeeInitialState: EmployeeState = {
   employees: [],
+  employee: null,
   loading: true,
   error: null,
 };
@@ -69,6 +70,21 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
       console.log(error);
     }
   };
+
+  const fetchEmployee = async (id: number) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.get(`/employee/${id}`, config);
+      employeeDispatch({ type: "FETCH_EMPLOYEE", payload: res.data.data });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <EmployeeContext.Provider
       value={{
@@ -76,9 +92,11 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
         createEmployee,
         updateEmployee,
         deleteEmployee,
+        fetchEmployee,
         employees: employeeState.employees,
         loading: employeeState.loading,
         error: employeeState.error,
+        employee: employeeState.employee,
       }}
     >
       {children}

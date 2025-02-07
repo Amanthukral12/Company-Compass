@@ -10,12 +10,14 @@ export const EmployeeReducer = (
         ...state,
         loading: false,
         employees: action.payload,
+        employee: null,
         error: null,
       };
     case "CREATE_EMPLOYEE":
       return {
         ...state,
         loading: false,
+        employee: null,
         employees: [...state.employees, action.payload],
         error: null,
       };
@@ -24,6 +26,7 @@ export const EmployeeReducer = (
         ...state,
         loading: false,
         error: null,
+        employee: null,
         employees: state.employees.map((employee) =>
           employee.id === action.payload.id ? action.payload : employee
         ),
@@ -33,9 +36,18 @@ export const EmployeeReducer = (
         ...state,
         loading: false,
         error: null,
+        employee: null,
         employees: state.employees.filter(
           (employee) => employee.id !== action.payload
         ),
+      };
+    case "FETCH_EMPLOYEE":
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        employee: action.payload,
+        employees: [],
       };
     default:
       return state;

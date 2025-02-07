@@ -56,12 +56,31 @@ export interface Employee {
 
 export interface EmployeeState {
   employees: Employee[] | [];
+  employee: EmployeeOverview | null;
   loading: boolean;
   error: string | null;
+}
+
+export interface AttendanceOverview {
+  monthName: string;
+  monthNumber: number;
+  totalDays: number;
+  totalHours: number;
+  presentDays: number;
+  absentDays: number;
+  halfDays: number;
+  leaveDays: number;
+}
+
+export interface EmployeeOverview {
+  employee: Employee;
+  currentMonth: AttendanceOverview;
+  otherMonths: AttendanceOverview[];
 }
 
 export type EmployeeAction =
   | { type: "FETCH_EMPLOYEES"; payload: Employee[] }
   | { type: "CREATE_EMPLOYEE"; payload: Employee }
   | { type: "UPDATE_EMPLOYEE"; payload: Employee }
-  | { type: "DELETE_EMPLOYEE"; payload: number };
+  | { type: "DELETE_EMPLOYEE"; payload: number }
+  | { type: "FETCH_EMPLOYEE"; payload: EmployeeOverview };
