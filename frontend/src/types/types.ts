@@ -66,6 +66,25 @@ export interface SalaryHistory {
   updatedAt: Date;
   employee: Employee;
 }
+enum AttendanceStatus {
+  PRESENT,
+  ABSENT,
+  HALF_DAY,
+  LEAVE,
+}
+
+export interface Attendance {
+  id: number;
+  date: Date;
+  startTime: Date;
+  endTime: Date;
+  hours: number;
+  employeeId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  employee: Employee;
+  status: AttendanceStatus;
+}
 
 export interface SalaryHistoryState {
   salaryHistories: SalaryHistory[] | [];
@@ -79,6 +98,13 @@ export interface EmployeeState {
   employee: EmployeeOverview | null;
   loading: boolean;
   error: string | null;
+}
+
+export interface AttendanceState {
+  loading: boolean;
+  error: string | null;
+  attendances: Attendance[] | [];
+  attendance: Attendance | null;
 }
 
 export interface AttendanceOverview {
@@ -114,3 +140,9 @@ export type SalaryHistoryAction =
   | { type: "UPDATE_SALARY_HISTORY"; payload: SalaryHistory }
   | { type: "DELETE_SALARY_HISTORY"; payload: number }
   | { type: "FETCH_SALARY_HISTORY"; payload: SalaryHistory };
+
+export type AttendanceAction =
+  | { type: "ADD_ATTENDANCE"; payload: Attendance }
+  | { type: "DELETE_ATTENDANCE"; payload: number }
+  | { type: "UPDATE_ATTENDANCE"; payload: Attendance }
+  | { type: "FETCH_MONTHLY_ATTENDANCE"; payload: Attendance[] };
