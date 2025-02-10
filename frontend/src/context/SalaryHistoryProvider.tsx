@@ -1,6 +1,6 @@
 import { ReactNode, useReducer } from "react";
 import { SalaryHistoryContext } from "./SalaryHistoryContext";
-import { SalaryHistoryState } from "../types/types";
+import { SalaryHistory, SalaryHistoryState } from "../types/types";
 import { SalaryHistoryReducer } from "../reducers/SalaryHistoryReducer";
 import api from "../utils/api";
 
@@ -28,10 +28,95 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
       console.log(error);
     }
   };
+
+  const addSalaryHistory = async ({
+    employeeId,
+    formData,
+  }: {
+    employeeId: number;
+    formData: SalaryHistory;
+  }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.post(
+        `/employee/${employeeId}/add`,
+        formData,
+        config
+      );
+      salaryHistoryDispatch({
+        type: "CREATE_SALARY_HISTORY",
+        payload: res.data,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteSalaryHistory = async ({
+    employeeId,
+    salaryHistoryId,
+  }: {
+    employeeId: number;
+    salaryHistoryId: number;
+  }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.delete(
+        `${employeeId}/salaryHistory/${salaryHistoryId}`,
+        config
+      );
+      salaryHistoryDispatch({
+        type: "DELETE_SALARY_HISTORY",
+        payload: employeeId,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateSalaryHistory = async ({
+    employeeId,
+    salaryHistoryId,
+    formData,
+  }: {
+    employeeId: number;
+    salaryHistoryId: number;
+    formData: SalaryHistory;
+  }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const res = await api.put(
+      `${employeeId}/salaryHistory/${salaryHistoryId}`,
+      formData,
+      config
+    );
+    salaryHistoryDispatch({
+      type: "UPDATE_SALARY_HISTORY",
+      payload: res.data,
+    });
+    return res;
+  };
+
   return (
     <SalaryHistoryContext.Provider
       value={{
         fetchSalaryHistories,
+        addSalaryHistory,
+        deleteSalaryHistory,
+        updateSalaryHistory,
         salaryHistories: salaryHistoryState.salaryHistories,
         salaryHistory: salaryHistoryState.salaryHistory,
         loading: salaryHistoryState.loading,
