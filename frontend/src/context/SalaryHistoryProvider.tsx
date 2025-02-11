@@ -76,7 +76,7 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
       );
       salaryHistoryDispatch({
         type: "DELETE_SALARY_HISTORY",
-        payload: employeeId,
+        payload: salaryHistoryId,
       });
       return res;
     } catch (error) {

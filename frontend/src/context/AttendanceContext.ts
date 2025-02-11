@@ -10,6 +10,31 @@ interface AttendanceContextProps extends AttendanceState {
     employeeId: number;
     formData: Attendance;
   }) => Promise<AxiosResponse | undefined>;
+  deleteAttendance: ({
+    employeeId,
+    attendanceId,
+  }: {
+    employeeId: number;
+    attendanceId: number;
+  }) => Promise<AxiosResponse | undefined>;
+  updateAttendance: ({
+    employeeId,
+    attendanceId,
+    formData,
+  }: {
+    employeeId: number;
+    attendanceId: number;
+    formData: Attendance;
+  }) => Promise<AxiosResponse | undefined>;
+  fetchMonthlyAttendance: ({
+    employeeId,
+    year,
+    month,
+  }: {
+    employeeId: number;
+    year: number;
+    month: number;
+  }) => Promise<AxiosResponse | undefined>;
 }
 
 export const AttendanceContext = createContext<
