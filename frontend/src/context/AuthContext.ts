@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
 
 interface AuthContextProps extends AuthState {
   login: () => Promise<void>;
+  logout: () => Promise<AxiosResponse | undefined>;
   fetchCompanyData: () => Promise<AxiosResponse | undefined>;
 }
 

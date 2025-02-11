@@ -1,7 +1,7 @@
-import { UserAuth } from "../context/AuthProvider";
+import { useAuth } from "../hooks/useAuth";
 
 const Profile = () => {
-  const { company } = UserAuth();
+  const { company } = useAuth();
   return <div>{company?.name}</div>;
 };
 

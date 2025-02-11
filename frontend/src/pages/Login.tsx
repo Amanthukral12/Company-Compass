@@ -1,7 +1,7 @@
-import { UserAuth } from "../context/AuthProvider";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
-  const { login } = UserAuth();
+  const { login } = useAuth();
 
   const onSubmit = async () => {
     try {

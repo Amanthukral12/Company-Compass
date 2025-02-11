@@ -15,14 +15,24 @@ const initialState: AuthState = {
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, authDispatch] = useReducer(authReducer, initialState);
   const login = async () => {
-    authDispatch({ type: "LOGIN_START" });
-    window.location.href = "http://localhost:8000/auth/google";
-    authDispatch({ type: "LOGIN_SUCCESS" });
+    try {
+      authDispatch({ type: "LOGIN_START" });
+      window.location.href = "http://localhost:8000/auth/google";
+      authDispatch({ type: "LOGIN_SUCCESS" });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  useEffect(() => {
-    fetchCompanyData();
-  }, [authState.isAuthenticated]);
+  const logout = async () => {
+    try {
+      const res = await api.post("/auth/logout");
+      authDispatch({ type: "LOGOUT" });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchCompanyData = async () => {
     try {
@@ -33,6 +43,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    fetchCompanyData();
+  }, [authState.isAuthenticated]);
   return (
     <AuthContext.Provider
       value={{
@@ -42,6 +55,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         error: authState.error,
         session: authState.session,
         login,
+        logout,
         fetchCompanyData,
       }}
     >
