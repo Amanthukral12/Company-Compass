@@ -1,21 +1,8 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { ReactNode, useEffect, useReducer } from "react";
 import { authReducer } from "../reducers/AuthReducer";
 import { AuthState } from "../types/types";
-import { AxiosResponse } from "axios";
 import api from "../utils/api";
-
-interface AuthContextProps extends AuthState {
-  login: () => Promise<void>;
-  fetchCompanyData: () => Promise<AxiosResponse | undefined>;
-}
-
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+import { AuthContext } from "./AuthContext";
 
 const initialState: AuthState = {
   company: null,
@@ -64,11 +51,3 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export default AuthProvider;
-
-export const UserAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("UserAuth must be used within an AuthProvider");
-  }
-  return context;
-};
