@@ -6,6 +6,7 @@ interface AuthContextProps extends AuthState {
   login: () => Promise<void>;
   logout: () => Promise<AxiosResponse | undefined>;
   fetchCompanyData: () => Promise<AxiosResponse | undefined>;
+  getAllSessions: () => Promise<AxiosResponse | undefined>;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(

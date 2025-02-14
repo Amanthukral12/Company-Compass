@@ -42,6 +42,12 @@ export const authReducer = (
         company: action.payload.data.currentCompany,
         session: action.payload.data.currentSession,
       };
+    case "LOAD_ALL_SESSIONS":
+      return {
+        ...state,
+        loading: false,
+        sessions: action.payload,
+      };
     case "LOGOUT":
       localStorage.clear();
       return {

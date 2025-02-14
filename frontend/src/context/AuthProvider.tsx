@@ -10,6 +10,7 @@ const initialState: AuthState = {
   loading: true,
   error: null,
   session: null,
+  sessions: null,
 };
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -28,6 +29,16 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const res = await api.post("/auth/logout");
       authDispatch({ type: "LOGOUT" });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllSessions = async () => {
+    try {
+      const res = await api.get("/auth/allSessions");
+      authDispatch({ type: "LOAD_ALL_SESSIONS", payload: res.data.data });
       return res;
     } catch (error) {
       console.log(error);
@@ -54,9 +65,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading: authState.loading,
         error: authState.error,
         session: authState.session,
+        sessions: authState.sessions,
         login,
         logout,
         fetchCompanyData,
+        getAllSessions,
       }}
     >
       {children}

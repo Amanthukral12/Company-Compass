@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import {
+  getAllSessions,
   getCurrentCompany,
   getCurrentSession,
   googleLoginSuccess,
@@ -25,6 +26,7 @@ router.get(
 );
 
 router.route("/auth/session").get(authenticateSession, getCurrentSession);
+router.route("/auth/allSessions").get(authenticateSession, getAllSessions);
 router.route("/auth/profile").get(authenticateSession, getCurrentCompany);
 router.route("/auth/logout").post(authenticateSession, logout);
 router.route("/auth/refresh-token").post(refreshAccessToken);

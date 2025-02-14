@@ -5,7 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import NavigationBar from "../components/UI/NavigationBar";
 
 const Home = () => {
-  const { company, logout } = useAuth();
+  const { company } = useAuth();
   const { fetchAllEmployees, employees } = useEmployee();
   useEffect(() => {
     fetchAllEmployees();
@@ -18,7 +18,6 @@ const Home = () => {
       {company?.name}
       Home
       <Link to="/profile">Profile</Link>
-      <button onClick={logout}>Logout</button>
       <div>
         {employees?.map((employee) => (
           <div key={employee.id}>{employee.name}</div>

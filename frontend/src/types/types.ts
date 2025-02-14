@@ -31,6 +31,7 @@ export interface AuthState {
   isAuthenticated: boolean;
   company: Company | null;
   session: Session | null;
+  sessions: Session[] | null;
   loading: boolean;
   error: string | null;
 }
@@ -40,6 +41,7 @@ export type AuthAction =
   | { type: "LOGIN_SUCCESS" }
   | { type: "LOGIN_ERROR"; payload: string }
   | { type: "LOAD_SESSION"; payload: CustomSession }
+  | { type: "LOAD_ALL_SESSIONS"; payload: Session[] }
   | { type: "LOGOUT" };
 
 export interface Employee {

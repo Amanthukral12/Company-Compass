@@ -98,6 +98,30 @@ export const getCurrentCompany = asyncHandler(
   }
 );
 
+export const getAllSessions = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.company) {
+      throw new ApiError(401, "Unauthorized Access. Please login again", [
+        "Unauthorized Access. Please login again",
+      ]);
+    }
+    const companyId = req.company.id;
+    const sessions = await prisma.session.findMany({
+      where: { companyId },
+      omit: {
+        refreshToken: true,
+      },
+    });
+    console.log(sessions);
+    if (!sessions) {
+      throw new ApiError(404, "No sessions found", ["No sessions found"]);
+    }
+    return res
+      .status(200)
+      .json(new ApiResponse(200, sessions, "Sessions fetched successfully"));
+  }
+);
+
 export const logout = asyncHandler(async (req: Request, res: Response) => {
   if (!req.currentSession) {
     throw new ApiError(401, "No active session", ["No active session"]);
