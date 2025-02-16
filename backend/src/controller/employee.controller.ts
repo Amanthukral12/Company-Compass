@@ -51,6 +51,13 @@ export const getAllEmployees = asyncHandler(
       where: {
         companyId,
       },
+      include: {
+        salaryHistory: {
+          select: {
+            hourlyRate: true,
+          },
+        },
+      },
     });
     return res
       .status(200)
@@ -150,7 +157,7 @@ export const deleteEmployee = asyncHandler(
     const companyId = req.company.id;
     const { employeeId } = req.params;
 
-    const employee = prisma.employee.findUnique({
+    const employee = await prisma.employee.findFirst({
       where: {
         id: Number(employeeId),
         companyId,
@@ -164,7 +171,6 @@ export const deleteEmployee = asyncHandler(
     await prisma.employee.delete({
       where: {
         id: Number(employeeId),
-        companyId,
       },
     });
     return res

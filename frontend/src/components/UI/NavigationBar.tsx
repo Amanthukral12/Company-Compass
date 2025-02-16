@@ -34,7 +34,7 @@ const NavigationBar = () => {
             isActive ? "bg-[#3a4c8fe5] !text-white rounded-2xl !shadow-2xl" : ""
           }`
         }
-        to="/employees"
+        to="/companyemployees"
       >
         <IoIosPeople className="h-8 w-8 mr-2.5" />
         Employees

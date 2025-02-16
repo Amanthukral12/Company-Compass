@@ -69,6 +69,7 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
       return res;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   };
 

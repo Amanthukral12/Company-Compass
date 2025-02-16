@@ -44,11 +44,10 @@ export const authenticateSession = async (
       if (session) {
         await prisma.session.delete({ where: { id: session.id } });
       }
-      return next(
-        new ApiError(401, "Invalid or expired session", [
-          "Invalid or expired session",
-        ])
-      );
+
+      throw new ApiError(401, "Invalid or expired session", [
+        "Invalid or expired session",
+      ]);
     }
     await prisma.session.update({
       where: { id: session.id },
@@ -58,6 +57,14 @@ export const authenticateSession = async (
     req.currentSession = session;
     next();
   } catch (error) {
-    next(new ApiError(500, "Internal Server Error", ["Something went wrong"]));
+    // If error is already an ApiError, pass it through
+    if (error instanceof ApiError) {
+      next(error);
+    } else {
+      // For unexpected errors
+      next(
+        new ApiError(500, "Internal Server Error", ["Something went wrong"])
+      );
+    }
   }
 };
