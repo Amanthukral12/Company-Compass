@@ -5,13 +5,23 @@ import { useAuth } from "../hooks/useAuth";
 import NavigationBar from "../components/UI/NavigationBar";
 import { EmployeesWithAttendance } from "../types/types";
 import Person from "../assets/Person-svg.svg?react";
+import Loading from "../components/Loading";
 const Home = () => {
-  const { company } = useAuth();
-  const { fetchAllEmployeesWithAttendanceSummary, employeesWithAttendance } =
-    useEmployee();
+  const { company, loading } = useAuth();
+  const {
+    fetchAllEmployeesWithAttendanceSummary,
+    employeesWithAttendance,
+    loading: employeesLoading,
+  } = useEmployee();
   useEffect(() => {
     fetchAllEmployeesWithAttendanceSummary();
   }, []);
+  if (loading) {
+    <Loading />;
+  }
+  if (employeesLoading) {
+    <Loading />;
+  }
   return (
     <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex w-full">
       <div className="w-0 lg:w-1/5 z-5">
