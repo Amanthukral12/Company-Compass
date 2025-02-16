@@ -4,6 +4,7 @@ import {
   createEmployee,
   deleteEmployee,
   getAllEmployees,
+  getAllEmployeesWithAttendanceSummary,
   getEmployeeOverView,
   updateEmployee,
 } from "../controller/employee.controller";
@@ -19,6 +20,9 @@ const router = Router();
 
 router.route("/add").post(authenticateSession, createEmployee);
 router.route("/").get(authenticateSession, getAllEmployees);
+router
+  .route("/employees-attendance-overview")
+  .get(authenticateSession, getAllEmployeesWithAttendanceSummary);
 router
   .route("/:employeeId")
   .get(authenticateSession, getEmployeeOverView)

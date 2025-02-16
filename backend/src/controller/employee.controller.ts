@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { ApiError } from "../utils/ApiError";
 import prisma from "../db/db";
 import { ApiResponse } from "../utils/ApiResponse";
-
+import { startOfMonth, endOfMonth } from "date-fns";
 export const createEmployee = asyncHandler(
   async (req: Request, res: Response) => {
     if (!req.company) {
@@ -208,5 +208,68 @@ export const updateEmployee = asyncHandler(
     return res
       .status(200)
       .json(new ApiResponse(200, employee, "Employee updated successfully"));
+  }
+);
+
+export const getAllEmployeesWithAttendanceSummary = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.company) {
+      throw new ApiError(401, "Unauthorized Access. Please login again", [
+        "Unauthorized Access. Please login again",
+      ]);
+    }
+    const companyId = req.company.id;
+    const startDate = startOfMonth(new Date());
+    const endDate = endOfMonth(new Date());
+
+    const employees = await prisma.employee.findMany({
+      where: { companyId },
+      include: {
+        attendance: {
+          where: {
+            date: {
+              gte: startDate,
+              lte: endDate,
+            },
+          },
+          select: {
+            hours: true,
+            date: true,
+            status: true,
+          },
+        },
+      },
+    });
+    const employeesSummary = employees.map((employee) => {
+      const totalHoursWorked = employee.attendance.reduce(
+        (sum, record) => sum + record.hours,
+        0
+      );
+      const totalAbsentDays = employee.attendance.filter(
+        (record) => record.status === "ABSENT"
+      ).length;
+      const totalDaysAttended = new Set(
+        employee.attendance.map(
+          (record) => record.date.toISOString().split("T")[0]
+        )
+      ).size;
+      return {
+        id: employee.id,
+        name: employee.name,
+        phoneNumber: employee.phoneNumber,
+        totalHoursWorked,
+        totalDaysAttended,
+        totalAbsentDays,
+      };
+    });
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          employeesSummary,
+          "Employees with Attendance summary fetched successfully"
+        )
+      );
   }
 );

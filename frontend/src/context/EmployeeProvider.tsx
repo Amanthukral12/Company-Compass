@@ -9,6 +9,7 @@ const employeeInitialState: EmployeeState = {
   employee: null,
   loading: true,
   error: null,
+  employeesWithAttendance: [],
 };
 
 const EmployeeProvider = ({ children }: { children: ReactNode }) => {
@@ -85,6 +86,27 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
       console.log(error);
     }
   };
+
+  const fetchAllEmployeesWithAttendanceSummary = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.get(
+        "/employee/employees-attendance-overview",
+        config
+      );
+      employeeDispatch({
+        type: "FETCH_ALL_EMPLOYEES_WITH_ATTENDANCE_SUMMARY",
+        payload: res.data.data,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <EmployeeContext.Provider
       value={{
@@ -93,10 +115,12 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
         updateEmployee,
         deleteEmployee,
         fetchEmployee,
+        fetchAllEmployeesWithAttendanceSummary,
         employees: employeeState.employees,
         loading: employeeState.loading,
         error: employeeState.error,
         employee: employeeState.employee,
+        employeesWithAttendance: employeeState.employeesWithAttendance,
       }}
     >
       {children}

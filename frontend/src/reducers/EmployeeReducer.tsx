@@ -48,6 +48,14 @@ export const EmployeeReducer = (
         error: null,
         employee: action.payload,
       };
+    case "FETCH_ALL_EMPLOYEES_WITH_ATTENDANCE_SUMMARY":
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        employee: null,
+        employeesWithAttendance: action.payload,
+      };
     default:
       return state;
   }

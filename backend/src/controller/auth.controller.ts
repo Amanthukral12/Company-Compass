@@ -147,6 +147,12 @@ export const refreshAccessToken = asyncHandler(
       req.cookies?.refresh_token || req.body.refresh_token;
 
     if (!incomingRefreshToken) {
+      const options = {
+        httpOnly: true,
+        secure: true,
+      };
+      res.clearCookie("access_token", options);
+      res.clearCookie("refresh_token", options);
       throw new ApiError(401, "Unauthorized request", [
         "No refresh token provided",
       ]);

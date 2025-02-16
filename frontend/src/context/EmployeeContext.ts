@@ -8,6 +8,9 @@ interface EmployeeContextProps extends EmployeeState {
   updateEmployee: (FormData: Employee) => Promise<AxiosResponse | undefined>;
   deleteEmployee: (id: number) => Promise<AxiosResponse | undefined>;
   fetchEmployee: (id: number) => Promise<AxiosResponse | undefined>;
+  fetchAllEmployeesWithAttendanceSummary: () => Promise<
+    AxiosResponse | undefined
+  >;
 }
 export const EmployeeContext = createContext<EmployeeContextProps | undefined>(
   undefined

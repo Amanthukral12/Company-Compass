@@ -98,6 +98,7 @@ export interface SalaryHistoryState {
 export interface EmployeeState {
   employees: Employee[] | [];
   employee: EmployeeOverview | null;
+  employeesWithAttendance: EmployeesWithAttendance[] | [];
   loading: boolean;
   error: string | null;
 }
@@ -126,12 +127,25 @@ export interface EmployeeOverview {
   otherMonths: AttendanceOverview[];
 }
 
+export interface EmployeesWithAttendance {
+  id: number;
+  name: string;
+  phoneNumber: string;
+  totalHoursWorked: number;
+  totalDaysAttended: number;
+  totalAbsentDays: number;
+}
+
 export type EmployeeAction =
   | { type: "FETCH_EMPLOYEES"; payload: Employee[] }
   | { type: "CREATE_EMPLOYEE"; payload: Employee }
   | { type: "UPDATE_EMPLOYEE"; payload: Employee }
   | { type: "DELETE_EMPLOYEE"; payload: number }
-  | { type: "FETCH_EMPLOYEE"; payload: EmployeeOverview };
+  | { type: "FETCH_EMPLOYEE"; payload: EmployeeOverview }
+  | {
+      type: "FETCH_ALL_EMPLOYEES_WITH_ATTENDANCE_SUMMARY";
+      payload: EmployeesWithAttendance[];
+    };
 
 export type SalaryHistoryAction =
   | {
