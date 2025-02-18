@@ -70,7 +70,10 @@ const Employees = () => {
           <div className="flex flex-col lg:flex-row">
             {employees.map((employee) => (
               <Link
-                to={`/employee/${employee.id}`}
+                to={{
+                  pathname: `/currentemployee/${employee.id}`,
+                  search: `?currentYear=${new Date().getFullYear()}`,
+                }}
                 key={employee.id}
                 className="bg-white my-1 mx-0 lg:mx-2 lg:w-1/2 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
               >

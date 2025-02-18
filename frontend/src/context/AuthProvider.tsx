@@ -6,7 +6,7 @@ import { AuthContext } from "./AuthContext";
 
 const initialState: AuthState = {
   company: null,
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
   loading: true,
   error: null,
   session: null,

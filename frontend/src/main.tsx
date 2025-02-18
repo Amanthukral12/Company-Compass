@@ -18,6 +18,7 @@ import EmployeeProvider from "./context/EmployeeProvider.tsx";
 import SalaryHistoryProvider from "./context/SalaryHistoryProvider.tsx";
 import AttendanceProvider from "./context/AttendanceProvider.tsx";
 import Employees from "./pages/Employees.tsx";
+import EmployeeDetails from "./pages/EmployeeDetails.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,10 +26,14 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute2 />}>
         <Route path="/login" element={<Login />} />
       </Route>
-      <Route path="" element={<PrivateRoute />}>
-        <Route index={true} path="/" element={<Home />} />
+      <Route element={<PrivateRoute />}>
+        <Route index={true} element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/companyemployees" element={<Employees />} />
+        <Route
+          path="/currentemployee/:employeeId"
+          element={<EmployeeDetails />}
+        />
       </Route>
     </Route>
   )

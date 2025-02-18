@@ -79,6 +79,13 @@ export const getEmployeeOverView = asyncHandler(
     const currentMonth = currentDate.getMonth() + 1;
     const employee = await prisma.employee.findUnique({
       where: { id: Number(employeeId), companyId },
+      include: {
+        salaryHistory: {
+          select: {
+            hourlyRate: true,
+          },
+        },
+      },
     });
 
     if (!employee) {
@@ -118,17 +125,17 @@ export const getEmployeeOverView = asyncHandler(
     const currentMonthSummary = (formattedSummaries as any).find(
       (summary: any) => Number(summary.monthnumber) === currentMonth
     ) || {
-      monthName: new Date(currentYear, currentMonth - 1).toLocaleString(
+      monthname: new Date(currentYear, currentMonth - 1).toLocaleString(
         "default",
         { month: "long" }
       ),
-      monthNumber: currentMonth,
-      totalDays: 0,
-      totalHours: 0,
-      presentDays: 0,
-      absentDays: 0,
-      halfDays: 0,
-      leaveDays: 0,
+      monthnumber: currentMonth,
+      totaldays: 0,
+      totalhours: 0,
+      presentdays: 0,
+      absentdays: 0,
+      halfdays: 0,
+      leavedays: 0,
     };
 
     const otherMonths = (formattedSummaries as any).filter(

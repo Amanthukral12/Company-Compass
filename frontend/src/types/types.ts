@@ -111,14 +111,14 @@ export interface AttendanceState {
 }
 
 export interface AttendanceOverview {
-  monthName: string;
-  monthNumber: number;
-  totalDays: number;
-  totalHours: number;
-  presentDays: number;
-  absentDays: number;
-  halfDays: number;
-  leaveDays: number;
+  monthname: string;
+  monthnumber: number;
+  totaldays: number;
+  totalhours: number;
+  presentdays: number;
+  absentdays: number;
+  halfdays: number;
+  leavedays: number;
 }
 
 export interface EmployeeOverview {

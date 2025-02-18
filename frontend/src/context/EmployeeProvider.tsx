@@ -73,14 +73,17 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const fetchEmployee = async (id: number) => {
+  const fetchEmployee = async (id: number, currentYear: number) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
     try {
-      const res = await api.get(`/employee/${id}`, config);
+      const res = await api.get(
+        `/employee/${id}?currentYear=${currentYear}`,
+        config
+      );
       employeeDispatch({ type: "FETCH_EMPLOYEE", payload: res.data.data });
       return res;
     } catch (error) {
