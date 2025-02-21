@@ -39,7 +39,7 @@ const EmployeeDetails = () => {
       </div>
       <section className="w-full lg:w-4/5 overflow-y-auto h-full">
         <h1 className="font-bold text-3xl m-3 text-[#3a4d8fe5]">
-          EmployeeDetails
+          Employee Details
         </h1>
         <div className="bg-white m-3 p-2 rounded-lg ">
           <p>Employee Name: {employee?.employee.name}</p>
@@ -69,8 +69,10 @@ const EmployeeDetails = () => {
         <h3 className="ml-3 text-xl font-bold text-[#3a4d8fe5]">
           Current Month
         </h3>
-        <div className="bg-white m-3 p-2 rounded-lg shadow-md">
-          <div>
+        <Link
+          to={`/${employeeId}/attendanceDetail/${year}/${employee?.currentMonth.monthnumber}`}
+        >
+          <div className="bg-white m-3 p-2 rounded-lg shadow-md">
             <p className="text-lg font-semibold">
               {employee?.currentMonth.monthname}, {year}
             </p>
@@ -94,7 +96,7 @@ const EmployeeDetails = () => {
               )}
             </p>
           </div>
-        </div>
+        </Link>
         <div className="mb-10">
           <h3 className="ml-3 text-xl font-bold text-[#3a4d8fe5]">
             Other Months

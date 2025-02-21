@@ -67,7 +67,7 @@ const Employees = () => {
           <h2 className="text-2xl text-[#3a4d8fe5] font-semibold mb-4 mx-0 lg:mx-2">
             Employees List
           </h2>
-          <div className="flex flex-col lg:flex-row">
+          <div className="flex flex-col lg:flex-row flex-wrap">
             {employees.map((employee) => (
               <Link
                 to={{
@@ -75,7 +75,7 @@ const Employees = () => {
                   search: `?currentYear=${new Date().getFullYear()}`,
                 }}
                 key={employee.id}
-                className="bg-white my-1 mx-0 lg:mx-2 lg:w-1/2 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
+                className="bg-white my-1 mx-0 lg:mx-2 lg:w-1/4 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
               >
                 <div>
                   <p>Name: {employee.name}</p>

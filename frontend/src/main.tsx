@@ -19,6 +19,7 @@ import SalaryHistoryProvider from "./context/SalaryHistoryProvider.tsx";
 import AttendanceProvider from "./context/AttendanceProvider.tsx";
 import Employees from "./pages/Employees.tsx";
 import EmployeeDetails from "./pages/EmployeeDetails.tsx";
+import AttendanceDetail from "./pages/AttendanceDetail.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,10 @@ const router = createBrowserRouter(
         <Route
           path="/currentemployee/:employeeId"
           element={<EmployeeDetails />}
+        />
+        <Route
+          path="/:employeeId/attendanceDetail/:year/:monthnumber"
+          element={<AttendanceDetail />}
         />
       </Route>
     </Route>

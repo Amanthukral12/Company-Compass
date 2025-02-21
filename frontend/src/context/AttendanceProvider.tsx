@@ -1,4 +1,4 @@
-import { ReactNode, useReducer } from "react";
+import { ReactNode, useCallback, useReducer } from "react";
 import { Attendance, AttendanceState } from "../types/types";
 import api from "../utils/api";
 import { AttendanceContext } from "./AttendanceContext";
@@ -16,50 +16,38 @@ const AttendanceProvider = ({ children }: { children: ReactNode }) => {
     AttendanceReducer,
     attendanceInitialState
   );
-  const addAttendance = async ({
-    employeeId,
-    formData,
-  }: {
-    employeeId: number;
-    formData: Attendance;
-  }) => {
+  const addAttendance = async (employeeId: number, formData: Attendance) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
     try {
-      const res = await api.post(`${employeeId}/add`, formData, config);
-      attendanceDispatch({ type: "ADD_ATTENDANCE", payload: res.data });
+      const res = await api.post(
+        `/attendance/${employeeId}/add`,
+        formData,
+        config
+      );
+      attendanceDispatch({ type: "ADD_ATTENDANCE", payload: res.data.data });
       return res;
     } catch (error) {
       console.log(error);
     }
   };
-  const deleteAttendance = async ({
-    employeeId,
-    attendanceId,
-  }: {
-    employeeId: number;
-    attendanceId: number;
-  }) => {
+  const deleteAttendance = async (employeeId: number, attendanceId: number) => {
     try {
-      const res = await api.delete(`${employeeId}/${attendanceId}`);
+      const res = await api.delete(`/attendance/${employeeId}/${attendanceId}`);
       attendanceDispatch({ type: "DELETE_ATTENDANCE", payload: attendanceId });
       return res;
     } catch (error) {
       console.log(error);
     }
   };
-  const updateAttendance = async ({
-    employeeId,
-    attendanceId,
-    formData,
-  }: {
-    employeeId: number;
-    attendanceId: number;
-    formData: Attendance;
-  }) => {
+  const updateAttendance = async (
+    employeeId: number,
+    attendanceId: number,
+    formData: Attendance
+  ) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +55,7 @@ const AttendanceProvider = ({ children }: { children: ReactNode }) => {
     };
     try {
       const res = await api.put(
-        `${employeeId}/${attendanceId}`,
+        `/attendance/${employeeId}/${attendanceId}`,
         formData,
         config
       );
@@ -78,26 +66,23 @@ const AttendanceProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const fetchMonthlyAttendance = async ({
-    employeeId,
-    year,
-    month,
-  }: {
-    employeeId: number;
-    year: number;
-    month: number;
-  }) => {
-    try {
-      const res = await api.get(`${employeeId}/attendance/${year}/${month}`);
-      attendanceDispatch({
-        type: "FETCH_MONTHLY_ATTENDANCE",
-        payload: res.data,
-      });
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const fetchMonthlyAttendance = useCallback(
+    async (employeeId: number, year: number, monthnumber: number) => {
+      try {
+        const res = await api.get(
+          `/employee/${employeeId}/attendance/${year}/${monthnumber}`
+        );
+        attendanceDispatch({
+          type: "FETCH_MONTHLY_ATTENDANCE",
+          payload: res.data.data,
+        });
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [attendanceDispatch]
+  );
   return (
     <AttendanceContext.Provider
       value={{
