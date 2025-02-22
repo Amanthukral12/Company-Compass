@@ -1,10 +1,10 @@
 import { differenceInHours, format } from "date-fns";
 import NavigationBar from "../components/UI/NavigationBar";
 import { useEmployee } from "../hooks/useEmployee";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useAttendance } from "../hooks/useAttendance";
 import { useEffect, useMemo, useState } from "react";
-
+import { IoMdArrowBack } from "react-icons/io";
 const AttendanceDetail = () => {
   const { employee, fetchEmployee } = useEmployee();
   const { employeeId, year, monthnumber } = useParams();
@@ -14,6 +14,8 @@ const AttendanceDetail = () => {
     attendances,
     addAttendance,
     updateAttendance,
+    deleteAttendance,
+    loading,
   } = useAttendance();
 
   const [editMode, setEditMode] = useState<{ [key: string]: boolean }>({});
@@ -57,7 +59,7 @@ const AttendanceDetail = () => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSave = (attendance: any, dateKey: Date) => {
+  const handleSave = async (attendance: any, dateKey: Date) => {
     const existingAttendance = newAttendances.find((a) => {
       return a.date === dateKey.toISOString();
     });
@@ -82,19 +84,23 @@ const AttendanceDetail = () => {
     };
 
     if (baseAttendance && baseAttendance.id) {
-      updateAttendance(
+      await updateAttendance(
         Number(employeeId),
         Number(baseAttendance.id),
         updatedAttendance
       );
     } else {
-      addAttendance(Number(employeeId), updatedAttendance);
+      await addAttendance(Number(employeeId), updatedAttendance);
     }
 
     setEditMode((prev) => ({
       ...prev,
       [baseAttendance.date.toString().split("T")[0]]: false,
     }));
+  };
+
+  const handleDelete = async (attendanceId: number) => {
+    await deleteAttendance(Number(employeeId), attendanceId);
   };
 
   useEffect(() => {
@@ -179,6 +185,16 @@ const AttendanceDetail = () => {
           </p>
         </div>
         <div>
+          <Link
+            to={{
+              pathname: `/currentemployee/${employeeId}`,
+              search: `?currentYear=${year}`,
+            }}
+            className="mx-3 font-semibold text-xl flex items-center"
+          >
+            <IoMdArrowBack className="w-8 h-8 mr-2" />
+            Go Back
+          </Link>
           <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {newAttendances.map((newAttendance, index) => {
               const dateKey = newAttendance.date.toString().split("T")[0];
@@ -187,7 +203,11 @@ const AttendanceDetail = () => {
               return (
                 <div
                   key={index}
-                  className="bg-white p-4 rounded-xl shadow-md border border-gray-200 hover:shadow-xl transition-all"
+                  className={`bg-white p-4 rounded-xl shadow-md border  hover:shadow-xl transition-all ${
+                    newAttendance.status === "ABSENT"
+                      ? "border-[##9b2226]"
+                      : "border-gray-200"
+                  }`}
                 >
                   <div>
                     <p>{format(newAttendance.date, "dd-MM-yyyy")}</p>
@@ -281,8 +301,9 @@ const AttendanceDetail = () => {
                             );
                           }}
                           className="bg-blue-500 text-white px-4 py-2 mt-3 rounded-md w-full"
+                          disabled={loading}
                         >
-                          Save
+                          {loading ? "Please wait" : "Save"}
                         </button>
                       ) : (
                         <button
@@ -298,6 +319,20 @@ const AttendanceDetail = () => {
                           Edit
                         </button>
                       )}
+                      {isExisting ? (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (newAttendance.id !== null) {
+                              handleDelete(newAttendance.id);
+                            }
+                          }}
+                          className="bg-[#9b2226] text-white px-4 py-2 mt-3 rounded-md w-full"
+                          disabled={loading}
+                        >
+                          {loading ? "Please wait" : "Delete"}
+                        </button>
+                      ) : null}
                     </form>
                   </div>
                 </div>

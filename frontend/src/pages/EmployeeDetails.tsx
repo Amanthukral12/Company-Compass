@@ -103,7 +103,8 @@ const EmployeeDetails = () => {
           </h3>
           <div className="flex flex-col lg:flex-row">
             {employee?.otherMonths.map((month) => (
-              <div
+              <Link
+                to={`/${employeeId}/attendanceDetail/${year}/${month.monthnumber}`}
                 className="bg-white m-3 p-2 rounded-lg shadow-md  lg:w-1/3"
                 key={month.monthnumber}
               >
@@ -125,11 +126,10 @@ const EmployeeDetails = () => {
                 <p>
                   Total Salary:{" "}
                   {employee?.employee.salaryHistory.map(
-                    (history) =>
-                      history.hourlyRate * employee?.currentMonth.totalhours
+                    (history) => history.hourlyRate * month.totalhours
                   )}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
