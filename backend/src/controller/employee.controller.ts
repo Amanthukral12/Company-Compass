@@ -12,30 +12,25 @@ export const createEmployee = asyncHandler(
       ]);
     }
     const companyId = req.company.id;
-    const { name, phoneNumber } = req.body;
+    const { name, phoneNumber, joinDate } = req.body;
 
-    if (!name || !phoneNumber) {
+    if (!name || !phoneNumber || !joinDate) {
       throw new ApiError(400, "Please provide all details", [
         "Please provide all details",
       ]);
     }
-    try {
-      const employee = await prisma.employee.create({
-        data: {
-          name,
-          phoneNumber,
-          companyId,
-        },
-      });
-      return res
-        .status(201)
-        .json(new ApiResponse(201, employee, "Employee Added"));
-    } catch (error) {
-      console.log(error);
-      throw new ApiError(400, "Error adding employee", [
-        "Error adding employee",
-      ]);
-    }
+
+    const employee = await prisma.employee.create({
+      data: {
+        name,
+        phoneNumber,
+        joinDate,
+        companyId,
+      },
+    });
+    return res
+      .status(201)
+      .json(new ApiResponse(201, employee, "Employee Added"));
   }
 );
 
@@ -53,15 +48,22 @@ export const getAllEmployees = asyncHandler(
       },
       include: {
         salaryHistory: {
+          where: { endDate: null },
+          orderBy: { startDate: "desc" },
+          take: 1,
           select: {
             hourlyRate: true,
           },
         },
       },
     });
+    const formattedEmployees = employees.map((employee) => ({
+      ...employee,
+      salaryHistory: employee.salaryHistory || [],
+    }));
     return res
       .status(200)
-      .json(new ApiResponse(200, employees, "Employees fetched"));
+      .json(new ApiResponse(200, formattedEmployees, "Employees fetched"));
   }
 );
 
@@ -81,6 +83,9 @@ export const getEmployeeOverView = asyncHandler(
       where: { id: Number(employeeId), companyId },
       include: {
         salaryHistory: {
+          where: { endDate: null },
+          orderBy: { startDate: "desc" },
+          take: 1,
           select: {
             hourlyRate: true,
           },
@@ -197,7 +202,7 @@ export const updateEmployee = asyncHandler(
     const { employeeId } = req.params;
     const { name, phoneNumber } = req.body;
 
-    const employeeExists = prisma.employee.findUnique({
+    const employeeExists = await prisma.employee.findUnique({
       where: {
         id: Number(employeeId),
         companyId,

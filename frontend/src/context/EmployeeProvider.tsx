@@ -27,7 +27,11 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const createEmployee = async (formData: Employee) => {
+  const createEmployee = async (formData: {
+    name: string;
+    phoneNumber: string;
+    joinDate: Date;
+  }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",

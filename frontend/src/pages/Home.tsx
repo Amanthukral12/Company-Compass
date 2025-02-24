@@ -27,7 +27,7 @@ const Home = () => {
       <div className="w-0 lg:w-1/5 z-5">
         <NavigationBar />
       </div>
-      <section className="w-full">
+      <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
         <div className="bg-white m-3 py-4 px-2 rounded-lg shadow-xl flex flex-col lg:flex-row">
           <div className="flex justify-center  pl-4 mr-2 w-full lg:w-1/5">
             {company?.avatar ? (
@@ -52,11 +52,11 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row">
+        <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {employeesWithAttendance?.map((employee: EmployeesWithAttendance) => (
             <div
               key={employee.id}
-              className="bg-white m-3 lg:w-1/2 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-xl"
+              className="bg-white my-3 rounded-lg p-4 text-[#3a4d8fe5] font-medium shadow-xl"
             >
               <p className="font-medium">Name: {employee.name}</p>
               <p>Phone Number: {employee.phoneNumber}</p>

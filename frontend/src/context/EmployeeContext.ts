@@ -4,7 +4,11 @@ import { Employee, EmployeeState } from "../types/types";
 
 interface EmployeeContextProps extends EmployeeState {
   fetchAllEmployees: () => Promise<AxiosResponse | undefined>;
-  createEmployee: (formData: Employee) => Promise<AxiosResponse | undefined>;
+  createEmployee: (formData: {
+    name: string;
+    phoneNumber: string;
+    joinDate: Date;
+  }) => Promise<AxiosResponse | undefined>;
   updateEmployee: (FormData: Employee) => Promise<AxiosResponse | undefined>;
   deleteEmployee: (id: number) => Promise<AxiosResponse | undefined>;
   fetchEmployee: (

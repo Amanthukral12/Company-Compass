@@ -101,11 +101,11 @@ const EmployeeDetails = () => {
           <h3 className="ml-3 text-xl font-bold text-[#3a4d8fe5]">
             Other Months
           </h3>
-          <div className="flex flex-col lg:flex-row">
+          <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {employee?.otherMonths.map((month) => (
               <Link
                 to={`/${employeeId}/attendanceDetail/${year}/${month.monthnumber}`}
-                className="bg-white m-3 p-2 rounded-lg shadow-md  lg:w-1/3"
+                className="bg-white my-3 p-2 rounded-lg shadow-md"
                 key={month.monthnumber}
               >
                 <p className="text-lg font-semibold">

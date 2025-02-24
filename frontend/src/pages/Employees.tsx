@@ -38,7 +38,7 @@ const Employees = () => {
       <div className=" w-0 lg:w-1/5 z-5">
         <NavigationBar />
       </div>
-      <section className="w-full">
+      <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
         <div className="bg-white m-3 p-2 rounded-lg shadow-xl flex flex-col lg:flex-row">
           <div className="flex justify-center  pl-4 mr-2 w-full lg:w-1/5">
             {company?.avatar ? (
@@ -64,10 +64,17 @@ const Employees = () => {
           </div>
         </div>
         <div className="mx-3">
-          <h2 className="text-2xl text-[#3a4d8fe5] font-semibold mb-4 mx-0 lg:mx-2">
-            Employees List
-          </h2>
-          <div className="flex flex-col lg:flex-row flex-wrap">
+          <div className="flex justify-between mb-4 mx-0 lg:mx-2">
+            <h2 className="text-2xl text-[#3a4d8fe5] font-semibold ">
+              Employees List
+            </h2>
+            <Link to={"/companyemployee/add"}>
+              <button className="text-lg font-semibold text-white bg-[#3a4d8fe5] px-8 py-1 rounded-xl cursor-pointer">
+                Add New Employee
+              </button>
+            </Link>
+          </div>
+          <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {employees.map((employee) => (
               <Link
                 to={{
@@ -75,7 +82,7 @@ const Employees = () => {
                   search: `?currentYear=${new Date().getFullYear()}`,
                 }}
                 key={employee.id}
-                className="bg-white my-1 mx-0 lg:mx-2 lg:w-1/4 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
+                className="bg-white my-1 mx-0 lg:mx-2 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
               >
                 <div>
                   <p>Name: {employee.name}</p>
@@ -84,9 +91,11 @@ const Employees = () => {
                   <p>Status: {employee.status}</p>
                   <p>
                     HourlyRate:{" "}
-                    {employee.salaryHistory.map(
-                      (history) => history.hourlyRate
-                    )}
+                    {employee.salaryHistory?.length
+                      ? employee.salaryHistory.map(
+                          (history) => history.hourlyRate
+                        )
+                      : "0"}
                   </p>
                 </div>
                 <div className="flex mr-4 items-center">
