@@ -1,8 +1,8 @@
-import { ReactNode, useReducer } from "react";
+import { ReactNode, useCallback, useReducer } from "react";
 import api from "../utils/api";
 import { EmployeeContext } from "./EmployeeContext";
 import { EmployeeReducer } from "../reducers/EmployeeReducer";
-import { Employee, EmployeeState } from "../types/types";
+import { EmployeeState } from "../types/types";
 
 const employeeInitialState: EmployeeState = {
   employees: [],
@@ -46,16 +46,23 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const updateEmployee = async (formData: Employee) => {
+  const updateEmployee = async (
+    formData: {
+      name: string;
+      phoneNumber: string;
+      joinDate: Date;
+    },
+    employeeId: number
+  ) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
     try {
-      const res = await api.put(`/employee/${formData.id}`, formData, config);
+      const res = await api.put(`/employee/${employeeId}`, formData, config);
       employeeDispatch({ type: "UPDATE_EMPLOYEE", payload: res.data.data });
-      return res;
+      return res.data;
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +84,7 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const fetchEmployee = async (id: number, currentYear: number) => {
+  const fetchEmployee = useCallback(async (id: number, currentYear: number) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -93,7 +100,7 @@ const EmployeeProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   const fetchAllEmployeesWithAttendanceSummary = async () => {
     const config = {

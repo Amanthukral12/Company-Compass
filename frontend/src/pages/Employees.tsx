@@ -7,7 +7,7 @@ import { useAuth } from "../hooks/useAuth";
 import Person from "../assets/Person-svg.svg?react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
 const Employees = () => {
@@ -17,6 +17,8 @@ const Employees = () => {
   useEffect(() => {
     fetchAllEmployees();
   }, []);
+
+  const navigate = useNavigate();
 
   const deleteHandler = async (id: number) => {
     try {
@@ -82,7 +84,7 @@ const Employees = () => {
                   search: `?currentYear=${new Date().getFullYear()}`,
                 }}
                 key={employee.id}
-                className="bg-white my-1 mx-0 lg:mx-2 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
+                className="bg-white my-1 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
               >
                 <div>
                   <p>Name: {employee.name}</p>
@@ -99,7 +101,14 @@ const Employees = () => {
                   </p>
                 </div>
                 <div className="flex mr-4 items-center">
-                  <FaRegEdit className="text-2xl mx-2" />
+                  <FaRegEdit
+                    className="text-2xl mx-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate(`/currentemployee/update/${employee.id}`);
+                    }}
+                  />
                   <MdDelete
                     className="text-2xl mx-2"
                     onClick={(e) => {

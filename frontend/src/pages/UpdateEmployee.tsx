@@ -1,18 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavigationBar from "../components/UI/NavigationBar";
 import { useEmployee } from "../hooks/useEmployee";
 import { CiUser } from "react-icons/ci";
 import { FaMobileAlt } from "react-icons/fa";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 const AddEmployee = () => {
-  const { createEmployee } = useEmployee();
+  const { updateEmployee, fetchEmployee } = useEmployee();
   const [formData, setFormData] = useState({
     name: "",
     phoneNumber: "",
     joinDate: new Date(),
   });
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const currentYear = new Date().getFullYear();
+
+  const { employeeId } = useParams();
+
+  useEffect(() => {
+    const fetchEmployeeDetails = async () => {
+      try {
+        searchParams.set("currentYear", currentYear.toString());
+        setSearchParams(searchParams);
+        const result = await fetchEmployee(
+          Number(employeeId),
+          Number(currentYear)
+        );
+
+        if (result?.data.data.employee) {
+          setFormData({
+            name: result?.data.data.employee.name,
+            phoneNumber: result?.data.data.employee.phoneNumber,
+            joinDate: result?.data.data.employee.joinDate,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchEmployeeDetails();
+  }, [employeeId, currentYear, searchParams, fetchEmployee]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
@@ -28,13 +56,7 @@ const AddEmployee = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createEmployee(formData);
-    setFormData({
-      name: "",
-      phoneNumber: "",
-      joinDate: new Date(),
-    });
-    navigate("/");
+    await updateEmployee(formData, Number(employeeId));
   };
 
   return (
@@ -45,7 +67,7 @@ const AddEmployee = () => {
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16 flex justify-center items-center">
         <div className="w-full lg:w-1/3 bg-white shadow-md rounded-lg py-6 flex flex-col items-center">
           <h1 className="font-bold text-3xl m-3  text-[#3a4d8fe5]">
-            Add Employee
+            Update Employee
           </h1>
           <form className="w-full" onSubmit={handleSubmit}>
             <div className="w-4/5 mx-auto relative mb-4">
@@ -82,7 +104,7 @@ const AddEmployee = () => {
               />
             </div>
             <button className="w-4/5 mx-auto text-lg font-semibold text-white bg-[#3a4d8fe5] px-8 py-1 rounded-xl cursor-pointer block">
-              Submit
+              Update
             </button>
           </form>
         </div>

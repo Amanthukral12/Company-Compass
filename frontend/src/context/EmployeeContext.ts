@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { createContext } from "react";
-import { Employee, EmployeeState } from "../types/types";
+import { EmployeeState } from "../types/types";
 
 interface EmployeeContextProps extends EmployeeState {
   fetchAllEmployees: () => Promise<AxiosResponse | undefined>;
@@ -9,7 +9,14 @@ interface EmployeeContextProps extends EmployeeState {
     phoneNumber: string;
     joinDate: Date;
   }) => Promise<AxiosResponse | undefined>;
-  updateEmployee: (FormData: Employee) => Promise<AxiosResponse | undefined>;
+  updateEmployee: (
+    formData: {
+      name: string;
+      phoneNumber: string;
+      joinDate: Date;
+    },
+    employeeId: number
+  ) => Promise<AxiosResponse | undefined>;
   deleteEmployee: (id: number) => Promise<AxiosResponse | undefined>;
   fetchEmployee: (
     id: number,

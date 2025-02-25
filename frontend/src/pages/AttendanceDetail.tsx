@@ -81,6 +81,12 @@ const AttendanceDetail = () => {
       ...(baseAttendance || {}),
       date: dateKey,
       ...formData[baseAttendance.date.toString().split("T")[0]],
+      startTime: new Date(
+        formData[baseAttendance.date.toString().split("T")[0]].startTime
+      ).toISOString(),
+      endTime: new Date(
+        formData[baseAttendance.date.toString().split("T")[0]].endTime
+      ).toISOString(),
     };
 
     if (baseAttendance && baseAttendance.id) {

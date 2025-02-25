@@ -21,7 +21,7 @@ import Employees from "./pages/Employees.tsx";
 import EmployeeDetails from "./pages/EmployeeDetails.tsx";
 import AttendanceDetail from "./pages/AttendanceDetail.tsx";
 import AddEmployee from "./pages/AddEmployee.tsx";
-
+import UpdateEmployee from "./pages/UpdateEmployee.tsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -36,6 +36,10 @@ const router = createBrowserRouter(
         <Route
           path="/currentemployee/:employeeId"
           element={<EmployeeDetails />}
+        />
+        <Route
+          path="/currentemployee/update/:employeeId"
+          element={<UpdateEmployee />}
         />
         <Route
           path="/:employeeId/attendanceDetail/:year/:monthnumber"

@@ -200,7 +200,7 @@ export const updateEmployee = asyncHandler(
     }
     const companyId = req.company.id;
     const { employeeId } = req.params;
-    const { name, phoneNumber } = req.body;
+    const { name, phoneNumber, joinDate } = req.body;
 
     const employeeExists = await prisma.employee.findUnique({
       where: {
@@ -221,6 +221,7 @@ export const updateEmployee = asyncHandler(
       data: {
         name: name !== undefined ? name : undefined,
         phoneNumber: phoneNumber !== undefined ? phoneNumber : undefined,
+        joinDate: joinDate !== undefined ? joinDate : undefined,
       },
     });
     return res
