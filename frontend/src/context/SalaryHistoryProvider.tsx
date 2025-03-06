@@ -29,13 +29,10 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const addSalaryHistory = async ({
-    employeeId,
-    formData,
-  }: {
-    employeeId: number;
-    formData: SalaryHistory;
-  }) => {
+  const addSalaryHistory = async (
+    employeeId: number,
+    formData: SalaryHistory
+  ) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -57,13 +54,10 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const deleteSalaryHistory = async ({
-    employeeId,
-    salaryHistoryId,
-  }: {
-    employeeId: number;
-    salaryHistoryId: number;
-  }) => {
+  const deleteSalaryHistory = async (
+    employeeId: number,
+    salaryHistoryId: number
+  ) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +65,7 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
     };
     try {
       const res = await api.delete(
-        `${employeeId}/salaryHistory/${salaryHistoryId}`,
+        `/employee/${employeeId}/salaryHistory/${salaryHistoryId}`,
         config
       );
       salaryHistoryDispatch({
@@ -84,22 +78,18 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const updateSalaryHistory = async ({
-    employeeId,
-    salaryHistoryId,
-    formData,
-  }: {
-    employeeId: number;
-    salaryHistoryId: number;
-    formData: SalaryHistory;
-  }) => {
+  const updateSalaryHistory = async (
+    employeeId: number,
+    salaryHistoryId: number,
+    formData: { startDate: Date; endDate: Date; hourlyRate: number }
+  ) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
     const res = await api.put(
-      `${employeeId}/salaryHistory/${salaryHistoryId}`,
+      `/employee/${employeeId}/salaryHistory/${salaryHistoryId}`,
       formData,
       config
     );
@@ -110,6 +100,24 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
     return res;
   };
 
+  const fetchSalaryHistory = async (
+    employeeId: number,
+    salaryHistoryId: number
+  ) => {
+    try {
+      const res = await api.get(
+        `/employee/${employeeId}/salaryHistory/${salaryHistoryId}`
+      );
+      salaryHistoryDispatch({
+        type: "FETCH_SALARY_HISTORY",
+        payload: res.data.data,
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <SalaryHistoryContext.Provider
       value={{
@@ -117,6 +125,7 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
         addSalaryHistory,
         deleteSalaryHistory,
         updateSalaryHistory,
+        fetchSalaryHistory,
         salaryHistories: salaryHistoryState.salaryHistories,
         salaryHistory: salaryHistoryState.salaryHistory,
         loading: salaryHistoryState.loading,

@@ -11,6 +11,7 @@ import {
 import {
   addSalaryHistory,
   deleteSalaryHistory,
+  fetchSalaryHistory,
   getAllSalaryHistoryForEmployee,
   updateSalaryHistory,
 } from "../controller/salaryHistory.controller";
@@ -36,6 +37,7 @@ router
   .post(authenticateSession, addSalaryHistory);
 router
   .route("/:employeeId/salaryHistory/:salaryHistoryId")
+  .get(authenticateSession, fetchSalaryHistory)
   .delete(authenticateSession, deleteSalaryHistory)
   .put(authenticateSession, updateSalaryHistory);
 router

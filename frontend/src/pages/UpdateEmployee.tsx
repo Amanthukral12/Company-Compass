@@ -5,7 +5,7 @@ import { CiUser } from "react-icons/ci";
 import { FaMobileAlt } from "react-icons/fa";
 import { format } from "date-fns";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-const AddEmployee = () => {
+const UpdateEmployee = () => {
   const { updateEmployee, fetchEmployee } = useEmployee();
   const [formData, setFormData] = useState({
     name: "",
@@ -115,4 +115,4 @@ const AddEmployee = () => {
   );
 };
 
-export default AddEmployee;
+export default UpdateEmployee;

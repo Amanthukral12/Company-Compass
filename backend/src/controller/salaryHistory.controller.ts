@@ -171,3 +171,34 @@ export const updateSalaryHistory = asyncHandler(
       );
   }
 );
+
+export const fetchSalaryHistory = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.company) {
+      throw new ApiError(401, "Unauthorized Access. Please login again", [
+        "Unauthorized Access. Please login again",
+      ]);
+    }
+
+    const employeeId = Number(req.params.employeeId);
+    const salaryHistoryId = Number(req.params.salaryHistoryId);
+
+    const salaryHistory = await prisma.salaryHistory.findUnique({
+      where: { id: Number(salaryHistoryId), employeeId },
+    });
+    if (!salaryHistory) {
+      throw new ApiError(404, "Salary history not found", [
+        "Salary history not found",
+      ]);
+    }
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          { salaryHistory },
+          "Salary history fetched successfully"
+        )
+      );
+  }
+);

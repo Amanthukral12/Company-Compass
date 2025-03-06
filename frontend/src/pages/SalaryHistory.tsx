@@ -1,20 +1,24 @@
 import { format } from "date-fns";
 import NavigationBar from "../components/UI/NavigationBar";
 import { useEmployee } from "../hooks/useEmployee";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "../components/Loading";
 import { useSalaryHistory } from "../hooks/useSalaryHistory";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import axios from "axios";
 
 const SalaryHistory = () => {
   const { employeeId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const { fetchEmployee, employee, loading } = useEmployee();
-  const { fetchSalaryHistories, salaryHistories } = useSalaryHistory();
+  const { fetchSalaryHistories, salaryHistories, deleteSalaryHistory } =
+    useSalaryHistory();
 
   const year = new Date().getFullYear();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEmployeeDetails = async () => {
@@ -40,7 +44,17 @@ const SalaryHistory = () => {
     fetchEmployeeSalaryHistory();
   }, []);
 
-  console.log(salaryHistories);
+  const deleteHandler = async (id: number) => {
+    try {
+      await deleteSalaryHistory(Number(employeeId), Number(id));
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
 
   if (loading) {
     return <Loading />;
@@ -93,12 +107,16 @@ const SalaryHistory = () => {
                     className="text-2xl mx-2"
                     onClick={(e) => {
                       e.preventDefault();
+                      navigate(
+                        `/currentemployee/${employeeId}/salaryHistory/update/${salaryHistory.id}`
+                      );
                     }}
                   />
                   <MdDelete
                     className="text-2xl mx-2"
                     onClick={(e) => {
                       e.preventDefault();
+                      deleteHandler(salaryHistory.id);
                     }}
                   />
                 </div>
