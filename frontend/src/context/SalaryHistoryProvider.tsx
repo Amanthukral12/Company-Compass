@@ -21,7 +21,7 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
       const res = await api.get(`/employee/${employeeId}/salaryHistory`);
       salaryHistoryDispatch({
         type: "FETCH_SALARY_HISTORIES",
-        payload: res.data,
+        payload: res.data.data,
       });
       return res;
     } catch (error) {

@@ -57,11 +57,9 @@ export const authenticateSession = async (
     req.currentSession = session;
     next();
   } catch (error) {
-    // If error is already an ApiError, pass it through
     if (error instanceof ApiError) {
       next(error);
     } else {
-      // For unexpected errors
       next(
         new ApiError(500, "Internal Server Error", ["Something went wrong"])
       );

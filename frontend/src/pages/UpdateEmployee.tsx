@@ -4,7 +4,7 @@ import { useEmployee } from "../hooks/useEmployee";
 import { CiUser } from "react-icons/ci";
 import { FaMobileAlt } from "react-icons/fa";
 import { format } from "date-fns";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 const AddEmployee = () => {
   const { updateEmployee, fetchEmployee } = useEmployee();
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ const AddEmployee = () => {
     joinDate: new Date(),
   });
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const currentYear = new Date().getFullYear();
 
@@ -57,6 +58,7 @@ const AddEmployee = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await updateEmployee(formData, Number(employeeId));
+    navigate("/companyemployees");
   };
 
   return (

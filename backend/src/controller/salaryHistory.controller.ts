@@ -68,6 +68,9 @@ export const getAllSalaryHistoryForEmployee = asyncHandler(
         employeeId,
         companyId,
       },
+      orderBy: {
+        startDate: "desc",
+      },
     });
     if (!salaryHistories) {
       throw new ApiError(404, "No salary histories found", [

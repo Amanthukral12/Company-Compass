@@ -48,7 +48,9 @@ const EmployeeDetails = () => {
             Joining Date:{" "}
             {format(employee?.employee.joinDate ?? new Date(), "dd-MM-yyyy")}
           </p>
-          <Link to={"#"}>Salary History</Link>
+          <Link to={`/currentemployee/${employeeId}/salaryHistory`}>
+            Salary History
+          </Link>
         </div>
         <div className="w-full flex ">
           <select

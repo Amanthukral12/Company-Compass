@@ -7,7 +7,7 @@ import { useEmployee } from "../hooks/useEmployee";
 import { SlScreenSmartphone } from "react-icons/sl";
 import { FaTabletAlt } from "react-icons/fa";
 import { MdMonitor } from "react-icons/md";
-import { parseUserAgent } from "../util/deviceInfo";
+import { parseUserAgent } from "../utils/deviceInfo";
 import Loading from "../components/Loading";
 const Profile = () => {
   const { company, sessions, getAllSessions, loading, session } = useAuth();
