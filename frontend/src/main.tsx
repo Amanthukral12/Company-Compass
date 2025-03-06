@@ -24,6 +24,7 @@ import AddEmployee from "./pages/AddEmployee.tsx";
 import UpdateEmployee from "./pages/UpdateEmployee.tsx";
 import SalaryHistory from "./pages/SalaryHistory.tsx";
 import UpdateSalaryHistory from "./pages/UpdateSalaryHistory.tsx";
+import AddSalaryHistory from "./pages/AddSalaryHistory.tsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -46,6 +47,10 @@ const router = createBrowserRouter(
         <Route
           path="/currentemployee/:employeeId/salaryHistory"
           element={<SalaryHistory />}
+        />
+        <Route
+          path="/currentemployee/:employeeId/salaryHistory/add"
+          element={<AddSalaryHistory />}
         />
         <Route
           path="/currentemployee/:employeeId/salaryHistory/update/:salaryHistoryId"

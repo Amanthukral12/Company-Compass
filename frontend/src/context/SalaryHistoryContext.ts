@@ -1,12 +1,12 @@
 import { AxiosResponse } from "axios";
 import { createContext } from "react";
-import { SalaryHistory, SalaryHistoryState } from "../types/types";
+import { SalaryHistoryState } from "../types/types";
 
 interface SalaryHistoryContextProps extends SalaryHistoryState {
   fetchSalaryHistories: (id: number) => Promise<AxiosResponse | undefined>;
   addSalaryHistory: (
     employeeId: number,
-    formData: SalaryHistory
+    formData: { startDate: Date; endDate: Date | undefined; hourlyRate: number }
   ) => Promise<AxiosResponse | undefined>;
   deleteSalaryHistory: (
     employeeId: number,

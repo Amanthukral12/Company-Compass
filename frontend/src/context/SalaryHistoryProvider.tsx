@@ -1,6 +1,6 @@
 import { ReactNode, useReducer } from "react";
 import { SalaryHistoryContext } from "./SalaryHistoryContext";
-import { SalaryHistory, SalaryHistoryState } from "../types/types";
+import { SalaryHistoryState } from "../types/types";
 import { SalaryHistoryReducer } from "../reducers/SalaryHistoryReducer";
 import api from "../utils/api";
 
@@ -31,7 +31,7 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
 
   const addSalaryHistory = async (
     employeeId: number,
-    formData: SalaryHistory
+    formData: { startDate: Date; endDate: Date | undefined; hourlyRate: number }
   ) => {
     const config = {
       headers: {
@@ -40,7 +40,7 @@ const SalaryHistoryProvider = ({ children }: { children: ReactNode }) => {
     };
     try {
       const res = await api.post(
-        `/employee/${employeeId}/add`,
+        `/employee/${employeeId}/salaryHistory/add`,
         formData,
         config
       );

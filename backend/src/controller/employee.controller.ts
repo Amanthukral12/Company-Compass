@@ -48,7 +48,6 @@ export const getAllEmployees = asyncHandler(
       },
       include: {
         salaryHistory: {
-          where: { endDate: null },
           orderBy: { startDate: "desc" },
           take: 1,
           select: {
@@ -83,7 +82,6 @@ export const getEmployeeOverView = asyncHandler(
       where: { id: Number(employeeId), companyId },
       include: {
         salaryHistory: {
-          where: { endDate: null },
           orderBy: { startDate: "desc" },
           take: 1,
           select: {

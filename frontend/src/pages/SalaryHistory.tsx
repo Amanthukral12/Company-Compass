@@ -1,7 +1,12 @@
 import { format } from "date-fns";
 import NavigationBar from "../components/UI/NavigationBar";
 import { useEmployee } from "../hooks/useEmployee";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "../components/Loading";
 import { useSalaryHistory } from "../hooks/useSalaryHistory";
@@ -77,9 +82,16 @@ const SalaryHistory = () => {
           </p>
         </div>
         <div className="mx-3">
-          <h2 className="text-2xl text-[#3a4d8fe5] font-semibold ">
-            Salary History
-          </h2>
+          <div className="flex justify-between mb-4 mx-0 lg:mx-2">
+            <h2 className="text-2xl text-[#3a4d8fe5] font-semibold ">
+              Salary History
+            </h2>
+            <Link to={`/currentemployee/${employeeId}/salaryHistory/add`}>
+              <button className="text-lg font-semibold text-white bg-[#3a4d8fe5] px-8 py-1 rounded-xl cursor-pointer">
+                Add New Salary
+              </button>
+            </Link>
+          </div>
           <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {salaryHistories.map((salaryHistory) => (
               <div

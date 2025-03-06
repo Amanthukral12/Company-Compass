@@ -1,44 +1,19 @@
-import { useEffect, useState } from "react";
-import { useSalaryHistory } from "../hooks/useSalaryHistory";
-import { useNavigate, useParams } from "react-router-dom";
+import { FaDollarSign, FaMobileAlt } from "react-icons/fa";
 import NavigationBar from "../components/UI/NavigationBar";
-import { FaMobileAlt } from "react-icons/fa";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSalaryHistory } from "../hooks/useSalaryHistory";
 import { format } from "date-fns";
-import { FaDollarSign } from "react-icons/fa";
 
-const UpdateSalaryHistory = () => {
-  const { updateSalaryHistory, fetchSalaryHistory } = useSalaryHistory();
+const AddSalaryHistory = () => {
+  const { addSalaryHistory } = useSalaryHistory();
+  const { employeeId } = useParams();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     startDate: new Date(),
     endDate: new Date(),
     hourlyRate: 0,
   });
-
-  const navigate = useNavigate();
-
-  const { employeeId, salaryHistoryId } = useParams();
-
-  useEffect(() => {
-    const fetchSalaryHistoryDetails = async () => {
-      try {
-        const result = await fetchSalaryHistory(
-          Number(employeeId),
-          Number(salaryHistoryId)
-        );
-        if (result?.data.data.salaryHistory) {
-          setFormData({
-            startDate: result?.data.data.salaryHistory.startDate,
-            endDate: result?.data.data.salaryHistory.endDate,
-            hourlyRate: result?.data.data.salaryHistory.hourlyRate,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchSalaryHistoryDetails();
-  }, [employeeId, salaryHistoryId]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     let { value } = e.target;
@@ -52,14 +27,15 @@ const UpdateSalaryHistory = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await updateSalaryHistory(
-      Number(employeeId),
-      Number(salaryHistoryId),
-      formData
-    );
-    navigate(`/currentemployee/${employeeId}/salaryHistory/`);
+    try {
+      e.preventDefault();
+      await addSalaryHistory(Number(employeeId), formData);
+      navigate(`/currentemployee/${employeeId}/salaryHistory`);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex w-full text-[#3a4d8fe5]">
       <div className=" w-0 lg:w-1/5 z-5">
@@ -68,7 +44,7 @@ const UpdateSalaryHistory = () => {
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16 flex justify-center items-center">
         <div className="w-full lg:w-2/3 bg-white shadow-md rounded-lg py-6 flex flex-col items-center">
           <h1 className="font-bold text-3xl m-3  text-[#3a4d8fe5]">
-            Update Employee Salary History
+            Add Employee Salary History
           </h1>
           <form className="w-full" onSubmit={handleSubmit}>
             <div className="w-4/5 mx-auto relative mb-4">
@@ -108,7 +84,7 @@ const UpdateSalaryHistory = () => {
               />
             </div>
             <button className="w-3/5 mx-auto text-lg font-semibold text-white bg-[#3a4d8fe5] px-8 py-2 rounded-xl cursor-pointer block">
-              Update
+              Add
             </button>
           </form>
         </div>
@@ -117,4 +93,4 @@ const UpdateSalaryHistory = () => {
   );
 };
 
-export default UpdateSalaryHistory;
+export default AddSalaryHistory;
