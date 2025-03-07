@@ -85,7 +85,7 @@ const SalaryHistory = () => {
         <h1 className="font-bold text-3xl m-3 text-[#3a4d8fe5]">
           Employee Details
         </h1>
-        <div className="bg-white m-3 p-2 rounded-lg ">
+        <div className="bg-white m-3 py-4 px-2 rounded-lg shadow-xl">
           <p>Employee Name: {employee?.employee.name}</p>
           <p>Employee Phone Number: {employee?.employee.phoneNumber}</p>
           <p>
