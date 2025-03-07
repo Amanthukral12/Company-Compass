@@ -4,9 +4,12 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSalaryHistory } from "../hooks/useSalaryHistory";
 import { format } from "date-fns";
+import { IoMenu } from "react-icons/io5";
+import Sidebar from "../components/UI/Sidebar";
 
 const AddSalaryHistory = () => {
   const { addSalaryHistory } = useSalaryHistory();
+  const [showSideBar, setShowSideBar] = useState(false);
   const { employeeId } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -37,10 +40,19 @@ const AddSalaryHistory = () => {
   };
 
   return (
-    <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex w-full text-[#3a4d8fe5]">
+    <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex flex-col lg:flex-row w-full text-[#3a4d8fe5]">
       <div className=" w-0 lg:w-1/5 z-5">
         <NavigationBar />
       </div>
+      <div className="w-full lg:hidden h-14">
+        <IoMenu
+          onClick={() => setShowSideBar(true)}
+          className={`flex lg:hidden h-8 w-8 ml-3 mt-2 text-[#3a4d8fe5] ${
+            showSideBar ? "hidden" : ""
+          }`}
+        />
+      </div>
+      <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16 flex justify-center items-center">
         <div className="w-full lg:w-2/3 bg-white shadow-md rounded-lg py-6 flex flex-col items-center">
           <h1 className="font-bold text-3xl m-3  text-[#3a4d8fe5]">

@@ -1,5 +1,5 @@
 /// <reference types="vite-plugin-svgr/client" />
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NavigationBar from "../components/UI/NavigationBar";
 import { useEmployee } from "../hooks/useEmployee";
 import { format } from "date-fns";
@@ -10,10 +10,13 @@ import { MdDelete } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "../components/Loading";
+import { IoMenu } from "react-icons/io5";
+import Sidebar from "../components/UI/Sidebar";
 const Employees = () => {
   const { loading, fetchAllEmployees, employees, deleteEmployee } =
     useEmployee();
   const { company } = useAuth();
+  const [showSideBar, setShowSideBar] = useState(false);
   useEffect(() => {
     fetchAllEmployees();
   }, []);
@@ -36,10 +39,19 @@ const Employees = () => {
     return <Loading />;
   }
   return (
-    <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex w-full">
+    <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex flex-col lg:flex-row w-full text-[#3a4d8fe5]">
       <div className=" w-0 lg:w-1/5 z-5">
         <NavigationBar />
       </div>
+      <div className="w-full lg:hidden h-14">
+        <IoMenu
+          onClick={() => setShowSideBar(true)}
+          className={`flex lg:hidden h-8 w-8 ml-3 mt-2 text-[#3a4d8fe5] ${
+            showSideBar ? "hidden" : ""
+          }`}
+        />
+      </div>
+      <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
         <div className="bg-white m-3 p-2 rounded-lg shadow-xl flex flex-col lg:flex-row">
           <div className="flex justify-center  pl-4 mr-2 w-full lg:w-1/5">

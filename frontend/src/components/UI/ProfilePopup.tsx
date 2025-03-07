@@ -47,7 +47,7 @@ const ProfilePopup = ({
       onClick={() => close()}
     >
       <div
-        className="bg-[#D9D9D9] absolute bottom-4 left-4 w-1/5 h-64 p-2 rounded-lg flex flex-col items-center backdrop:blur-sm"
+        className="bg-[#D9D9D9] absolute bottom-4 left-4 w-4/5 lg:w-1/5 h-64 p-2 rounded-lg flex flex-col items-center backdrop:blur-sm"
         onClick={(e) => e.stopPropagation()}
       >
         {company?.avatar ? (

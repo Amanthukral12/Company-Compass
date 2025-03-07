@@ -4,9 +4,12 @@ import { useEmployee } from "../hooks/useEmployee";
 import Loading from "../components/Loading";
 import NavigationBar from "../components/UI/NavigationBar";
 import { format } from "date-fns";
+import { IoMenu } from "react-icons/io5";
+import Sidebar from "../components/UI/Sidebar";
 
 const EmployeeDetails = () => {
   const { employeeId } = useParams();
+  const [showSideBar, setShowSideBar] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { fetchEmployee, employee, loading } = useEmployee();
 
@@ -33,10 +36,19 @@ const EmployeeDetails = () => {
     return <Loading />;
   }
   return (
-    <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex w-full text-[#3a4d8fe5]">
+    <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex flex-col lg:flex-row w-full text-[#3a4d8fe5]">
       <div className=" w-0 lg:w-1/5 z-5">
         <NavigationBar />
       </div>
+      <div className="w-full lg:hidden h-14">
+        <IoMenu
+          onClick={() => setShowSideBar(true)}
+          className={`flex lg:hidden h-8 w-8 ml-3 mt-2 text-[#3a4d8fe5] ${
+            showSideBar ? "hidden" : ""
+          }`}
+        />
+      </div>
+      <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
       <section className="w-full lg:w-4/5 overflow-y-auto h-full">
         <h1 className="font-bold text-3xl m-3 text-[#3a4d8fe5]">
           Employee Details
