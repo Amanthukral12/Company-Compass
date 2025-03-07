@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 /// <reference types="vite-plugin-svgr/client" />
 import { useAuth } from "../hooks/useAuth";
-import Person from "../assets/Person-svg.svg?react";
 import NavigationBar from "../components/UI/NavigationBar";
-import { useEmployee } from "../hooks/useEmployee";
 import { SlScreenSmartphone } from "react-icons/sl";
 import { FaTabletAlt } from "react-icons/fa";
 import { MdMonitor } from "react-icons/md";
@@ -11,13 +9,10 @@ import { parseUserAgent } from "../utils/deviceInfo";
 import Loading from "../components/Loading";
 import Sidebar from "../components/UI/Sidebar";
 import { IoMenu } from "react-icons/io5";
+import CompanyHeader from "../components/UI/CompanyHeader";
 const Profile = () => {
-  const { company, sessions, getAllSessions, loading, session } = useAuth();
-  const { fetchAllEmployees, employees } = useEmployee();
+  const { sessions, getAllSessions, loading, session } = useAuth();
   const [showSideBar, setShowSideBar] = useState(false);
-  useEffect(() => {
-    fetchAllEmployees();
-  }, []);
   useEffect(() => {
     getAllSessions();
   }, []);
@@ -50,30 +45,7 @@ const Profile = () => {
       </div>
       <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
-        <div className="bg-white m-3 p-2 rounded-lg shadow-xl flex flex-col lg:flex-row">
-          <div className="flex justify-center  pl-4 mr-2 w-full lg:w-1/5">
-            {company?.avatar ? (
-              <img
-                src={company.avatar}
-                alt="company profile photo"
-                className="h-48 w-48 rounded-full border-gray-600 border-2"
-              />
-            ) : (
-              <Person />
-            )}
-          </div>
-          <div className="w-4/5">
-            <p className="text-4xl text-[#3a4d8fe5] font-bold mb-2">
-              {company?.name}
-            </p>
-            <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
-              {company?.email}
-            </p>
-            <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
-              No of employees: {employees.length}
-            </p>
-          </div>
-        </div>
+        <CompanyHeader />
         <div className="bg-white mx-3 rounded-lg shadow-xl p-4">
           <h3 className="text-lg font-semibold mb-4">Sessions</h3>
           <div className="space-y-3">

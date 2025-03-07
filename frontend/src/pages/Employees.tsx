@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import NavigationBar from "../components/UI/NavigationBar";
 import { useEmployee } from "../hooks/useEmployee";
 import { format } from "date-fns";
-import { useAuth } from "../hooks/useAuth";
-import Person from "../assets/Person-svg.svg?react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,10 +10,10 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import { IoMenu } from "react-icons/io5";
 import Sidebar from "../components/UI/Sidebar";
+import CompanyHeader from "../components/UI/CompanyHeader";
 const Employees = () => {
   const { loading, fetchAllEmployees, employees, deleteEmployee } =
     useEmployee();
-  const { company } = useAuth();
   const [showSideBar, setShowSideBar] = useState(false);
   useEffect(() => {
     fetchAllEmployees();
@@ -53,30 +51,7 @@ const Employees = () => {
       </div>
       <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
-        <div className="bg-white m-3 p-2 rounded-lg shadow-xl flex flex-col lg:flex-row">
-          <div className="flex justify-center  pl-4 mr-2 w-full lg:w-1/5">
-            {company?.avatar ? (
-              <img
-                src={company.avatar}
-                alt="company profile photo"
-                className="h-48 w-48 rounded-full border-gray-600 border-2"
-              />
-            ) : (
-              <Person />
-            )}
-          </div>
-          <div className="w-4/5">
-            <p className="text-4xl text-[#3a4d8fe5] font-bold mb-2">
-              {company?.name}
-            </p>
-            <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
-              {company?.email}
-            </p>
-            <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
-              No of employees: {employees.length}
-            </p>
-          </div>
-        </div>
+        <CompanyHeader />
         <div className="mx-3">
           <div className="flex justify-between mb-4 mx-0 lg:mx-2">
             <h2 className="text-2xl text-[#3a4d8fe5] font-semibold ">
