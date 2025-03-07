@@ -49,7 +49,7 @@ const Profile = () => {
         />
       </div>
       <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
-      <section className="w-full">
+      <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
         <div className="bg-white m-3 p-2 rounded-lg shadow-xl flex flex-col lg:flex-row">
           <div className="flex justify-center  pl-4 mr-2 w-full lg:w-1/5">
             {company?.avatar ? (
