@@ -80,15 +80,6 @@ export const getEmployeeOverView = asyncHandler(
     const currentMonth = currentDate.getMonth() + 1;
     const employee = await prisma.employee.findUnique({
       where: { id: Number(employeeId), companyId },
-      include: {
-        salaryHistory: {
-          orderBy: { startDate: "desc" },
-          take: 1,
-          select: {
-            hourlyRate: true,
-          },
-        },
-      },
     });
 
     if (!employee) {
@@ -96,22 +87,35 @@ export const getEmployeeOverView = asyncHandler(
     }
 
     const allMonthlySummaries = await prisma.$queryRaw`
-    SELECT 
-        to_char(DATE_TRUNC('month', date), 'FMMonth') AS monthName, -- 'FM' removes extra spaces
-        EXTRACT(MONTH FROM date) AS monthNumber,
+        WITH SalaryRates AS (
+        SELECT 
+        "employeeId", 
+        "hourlyRate", 
+        "startDate", 
+        COALESCE("endDate", CURRENT_DATE) AS "endDate"
+        FROM "SalaryHistory"
+        WHERE "employeeId" = ${Number(employeeId)}
+        )
+
+        SELECT 
+        to_char(DATE_TRUNC('month', A.date), 'FMMonth') AS monthName,
+        EXTRACT(MONTH FROM A.date) AS monthNumber,
         COUNT(*) AS totalDays,
-        SUM(hours) AS totalHours,
-        COUNT(CASE WHEN status='PRESENT' THEN 1 END) AS presentDays,
-        COUNT(CASE WHEN status='ABSENT' THEN 1 END) AS absentDays,
-        COUNT(CASE WHEN status='HALF_DAY' THEN 1 END) AS halfDays,
-        COUNT(CASE WHEN status='LEAVE' THEN 1 END) AS leaveDays
-    FROM "Attendance"
-    WHERE
-        "employeeId" = ${Number(employeeId)}
-        AND EXTRACT(YEAR FROM date) = ${currentYear}
-    GROUP BY DATE_TRUNC('month', date), EXTRACT(MONTH FROM date)
-    ORDER BY DATE_TRUNC('month', date) ASC;
-`;
+        SUM(A.hours) AS totalHours,
+        COUNT(CASE WHEN A.status='PRESENT' THEN 1 END) AS presentDays,
+        COUNT(CASE WHEN A.status='ABSENT' THEN 1 END) AS absentDays,
+        COUNT(CASE WHEN A.status='HALF_DAY' THEN 1 END) AS halfDays,
+        COUNT(CASE WHEN A.status='LEAVE' THEN 1 END) AS leaveDays,
+        SUM(A.hours * S."hourlyRate") AS totalSalary
+        FROM "Attendance" A
+        LEFT JOIN SalaryRates S
+        ON A."employeeId" = S."employeeId"
+        AND A.date BETWEEN S."startDate" AND S."endDate"
+        WHERE A."employeeId" = 1
+        AND EXTRACT(YEAR FROM A.date) = ${currentYear}
+        GROUP BY DATE_TRUNC('month', A.date), EXTRACT(MONTH FROM A.date)
+        ORDER BY EXTRACT(MONTH FROM A.date);
+        `;
 
     const formattedSummaries = (allMonthlySummaries as any).map(
       (summary: any) => ({
@@ -122,6 +126,7 @@ export const getEmployeeOverView = asyncHandler(
         absentdays: Number(summary.absentdays),
         halfdays: Number(summary.halfdays),
         leavedays: Number(summary.leavedays),
+        totalsalary: Number(summary.totalsalary),
       })
     );
 
@@ -139,6 +144,7 @@ export const getEmployeeOverView = asyncHandler(
       absentdays: 0,
       halfdays: 0,
       leavedays: 0,
+      totalsalary: 0,
     };
 
     const otherMonths = (formattedSummaries as any).filter(

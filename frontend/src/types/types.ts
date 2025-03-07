@@ -119,6 +119,7 @@ export interface AttendanceOverview {
   absentdays: number;
   halfdays: number;
   leavedays: number;
+  totalsalary: number;
 }
 
 export interface EmployeeOverview {

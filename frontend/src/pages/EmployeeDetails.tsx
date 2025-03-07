@@ -49,7 +49,9 @@ const EmployeeDetails = () => {
             {format(employee?.employee.joinDate ?? new Date(), "dd-MM-yyyy")}
           </p>
           <Link to={`/currentemployee/${employeeId}/salaryHistory`}>
-            Salary History
+            <button className="bg-[#3a4d8fe5] text-white py-1 px-3 mt-2 rounded-md">
+              Salary History
+            </button>
           </Link>
         </div>
         <div className="w-full flex ">
@@ -90,13 +92,7 @@ const EmployeeDetails = () => {
             <p>Total Half Days: {employee?.currentMonth.halfdays}</p>
             <p>Total Leave Days: {employee?.currentMonth.leavedays}</p>
             <p>Total Hours: {employee?.currentMonth.totalhours}</p>
-            <p>
-              Total Salary:{" "}
-              {employee?.employee.salaryHistory.map(
-                (history) =>
-                  history.hourlyRate * employee?.currentMonth.totalhours
-              )}
-            </p>
+            <p>Total Salary: {employee?.currentMonth.totalsalary}</p>
           </div>
         </Link>
         <div className="mb-10">
@@ -125,12 +121,7 @@ const EmployeeDetails = () => {
                 <p>Total Half Days: {month.halfdays}</p>
                 <p>Total Leave Days: {month.leavedays}</p>
                 <p>Total Hours: {month.totalhours}</p>
-                <p>
-                  Total Salary:{" "}
-                  {employee?.employee.salaryHistory.map(
-                    (history) => history.hourlyRate * month.totalhours
-                  )}
-                </p>
+                <p>Total Salary: {month.totalsalary}</p>
               </Link>
             ))}
           </div>
