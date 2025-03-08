@@ -3,6 +3,8 @@ export interface CompanyDocument {
   googleId: string;
   email: string;
   avatar: string | null;
+  GST: string | null;
+  Address: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

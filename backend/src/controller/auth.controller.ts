@@ -112,7 +112,6 @@ export const getAllSessions = asyncHandler(
         refreshToken: true,
       },
     });
-    console.log(sessions);
     if (!sessions) {
       throw new ApiError(404, "No sessions found", ["No sessions found"]);
     }
@@ -217,5 +216,33 @@ export const refreshAccessToken = asyncHandler(
         "Invalid refresh token",
       ]);
     }
+  }
+);
+
+export const updateCompanyProfile = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!req.company) {
+      throw new ApiError(401, "Unauthorized Access. Please login again", [
+        "Unauthorized Access. Please login again",
+      ]);
+    }
+    const companyId = req.company.id;
+
+    const { name, GST, Address } = req.body;
+
+    const company = await prisma.company.update({
+      where: { id: companyId },
+      data: {
+        name: name !== undefined ? name : undefined,
+        GST: GST !== undefined ? GST : undefined,
+        Address: Address !== undefined ? Address : undefined,
+      },
+    });
+
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, company, "Company details updated successfully")
+      );
   }
 );
