@@ -7,6 +7,11 @@ interface AuthContextProps extends AuthState {
   logout: () => Promise<AxiosResponse | undefined>;
   fetchCompanyData: () => Promise<AxiosResponse | undefined>;
   getAllSessions: () => Promise<AxiosResponse | undefined>;
+  updateCompanyData: (formData: {
+    name: string;
+    GST: string;
+    Address: string;
+  }) => Promise<AxiosResponse | undefined>;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(

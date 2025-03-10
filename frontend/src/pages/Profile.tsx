@@ -10,6 +10,7 @@ import Loading from "../components/Loading";
 import Sidebar from "../components/UI/Sidebar";
 import { IoMenu } from "react-icons/io5";
 import CompanyHeader from "../components/UI/CompanyHeader";
+import { Link } from "react-router-dom";
 const Profile = () => {
   const { sessions, getAllSessions, loading, session } = useAuth();
   const [showSideBar, setShowSideBar] = useState(false);
@@ -46,6 +47,11 @@ const Profile = () => {
       <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
         <CompanyHeader />
+        <Link to={"/profile/update"}>
+          <button className="bg-[#3a4d8fe5] cursor-pointer rounded-lg text-lg text-white py-1 px-14 mt-2 mb-2 mx-3 font-semibold">
+            Update Profile
+          </button>
+        </Link>
         <div className="bg-white mx-3 rounded-lg shadow-xl p-4">
           <h3 className="text-lg font-semibold mb-4">Sessions</h3>
           <div className="space-y-3">

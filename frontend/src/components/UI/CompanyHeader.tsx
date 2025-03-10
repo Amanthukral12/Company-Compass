@@ -28,11 +28,18 @@ const CompanyHeader = () => {
       </div>
       <div className="w-4/5">
         <p className="text-4xl text-[#3a4d8fe5] font-bold mb-2">
-          {company?.name}
+          Company Name: {company?.name}
         </p>
         <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
-          {company?.email}
+          Company Email: {company?.email}
         </p>
+        <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
+          Company Address: {company?.Address}
+        </p>
+        <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
+          Company GST: {company?.GST}
+        </p>
+
         <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">
           No of employees: {employees.length}
         </p>

@@ -1,7 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 import { useAuth } from "../../hooks/useAuth";
 import Person from "../../assets/Person-svg.svg?react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const ProfilePopup = ({
   shown,
   close,
@@ -61,9 +61,14 @@ const ProfilePopup = ({
         )}
         <p>{company?.name}</p>
         <p>{company?.email}</p>
+        <Link to={"/profile/update"}>
+          <button className="bg-[#3a4d8fe5] cursor-pointer rounded-lg text-lg text-[#D9D9D9] py-1 px-14 mt-2 mb-2 font-semibold">
+            Update Profile
+          </button>
+        </Link>
         <button
           onClick={(e) => logoutHandler(e)}
-          className="bg-[#3a4d8fe5] rounded-lg text-lg text-[#D9D9D9] py-1 px-14 mt-2 mb-4 font-semibold"
+          className="bg-[#3a4d8fe5] cursor-pointer rounded-lg text-lg text-[#D9D9D9] py-1 px-14 mt-2 mb-4 font-semibold"
         >
           Logout
         </button>

@@ -4,6 +4,8 @@ export interface Company {
   googleId: string;
   email: string;
   avatar: string | null;
+  GST: string | null;
+  Address: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,6 +43,7 @@ export type AuthAction =
   | { type: "LOGIN_SUCCESS" }
   | { type: "LOGIN_ERROR"; payload: string }
   | { type: "LOAD_SESSION"; payload: CustomSession }
+  | { type: "UPDATE_PROFILE"; payload: Company }
   | { type: "LOAD_ALL_SESSIONS"; payload: Session[] }
   | { type: "LOGOUT" };
 

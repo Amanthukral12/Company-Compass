@@ -54,6 +54,25 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log(error);
     }
   };
+
+  const updateCompanyData = async (formData: {
+    name: string;
+    GST: string;
+    Address: string;
+  }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await api.put("/auth/profile", formData, config);
+      authDispatch({ type: "UPDATE_PROFILE", payload: res.data.data });
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     fetchCompanyData();
   }, [authState.isAuthenticated]);
@@ -70,6 +89,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout,
         fetchCompanyData,
         getAllSessions,
+        updateCompanyData,
       }}
     >
       {children}

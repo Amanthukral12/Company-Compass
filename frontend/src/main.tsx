@@ -25,6 +25,7 @@ import UpdateEmployee from "./pages/UpdateEmployee.tsx";
 import SalaryHistory from "./pages/SalaryHistory.tsx";
 import UpdateSalaryHistory from "./pages/UpdateSalaryHistory.tsx";
 import AddSalaryHistory from "./pages/AddSalaryHistory.tsx";
+import UpdateCompanyProfile from "./pages/UpdateCompanyProfile.tsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoute />}>
         <Route index={true} element={<Home />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/update" element={<UpdateCompanyProfile />} />
         <Route path="/companyemployees" element={<Employees />} />
         <Route path="/companyemployee/add" element={<AddEmployee />} />
         <Route

@@ -26,6 +26,13 @@ export const authReducer = (
         loading: false,
         error: action.payload,
       };
+    case "UPDATE_PROFILE":
+      localStorage.setItem("companyInfo", JSON.stringify(action.payload));
+      return {
+        ...state,
+        loading: false,
+        company: { ...state.company, ...action.payload },
+      };
     case "LOAD_SESSION":
       localStorage.setItem(
         "sessionInfo",
