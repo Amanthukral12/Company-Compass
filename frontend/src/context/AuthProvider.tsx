@@ -18,7 +18,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async () => {
     try {
       authDispatch({ type: "LOGIN_START" });
-      window.location.href = "http://localhost:8000/auth/google";
+      window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/google`;
       authDispatch({ type: "LOGIN_SUCCESS" });
     } catch (error) {
       console.log(error);
