@@ -15,6 +15,7 @@ import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import { IoMenu } from "react-icons/io5";
 import Sidebar from "../components/UI/Sidebar";
+import { IoMdArrowBack } from "react-icons/io";
 
 const SalaryHistory = () => {
   const { employeeId } = useParams();
@@ -94,6 +95,13 @@ const SalaryHistory = () => {
           </p>
         </div>
         <div className="mx-3">
+          <Link
+            to={`/currentemployee/${employeeId}`}
+            className="mx-3 font-semibold text-xl flex items-center my-2"
+          >
+            <IoMdArrowBack className="w-8 h-8 mr-2" />
+            Go Back
+          </Link>
           <div className="flex justify-between mb-4 mx-0 lg:mx-2">
             <h2 className="text-2xl text-[#3a4d8fe5] font-semibold ">
               Salary History

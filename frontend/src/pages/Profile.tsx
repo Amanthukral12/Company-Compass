@@ -47,8 +47,8 @@ const Profile = () => {
       <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
       <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
         <CompanyHeader />
-        <Link to={"/profile/update"}>
-          <button className="bg-[#3a4d8fe5] cursor-pointer rounded-lg text-lg text-white py-1 px-14 mt-2 mb-2 mx-3 font-semibold">
+        <Link to={"/profile/update"} className="block w-fit ml-auto">
+          <button className="bg-[#3a4d8fe5] cursor-pointer rounded-lg text-lg text-white py-1 px-14 mt-2 mb-2  mr-3 font-semibold block">
             Update Profile
           </button>
         </Link>

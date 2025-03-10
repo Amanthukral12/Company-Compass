@@ -6,6 +6,7 @@ import NavigationBar from "../components/UI/NavigationBar";
 import { format } from "date-fns";
 import { IoMenu } from "react-icons/io5";
 import Sidebar from "../components/UI/Sidebar";
+import { IoMdArrowBack } from "react-icons/io";
 
 const EmployeeDetails = () => {
   const { employeeId } = useParams();
@@ -66,9 +67,16 @@ const EmployeeDetails = () => {
             </button>
           </Link>
         </div>
-        <div className="w-full flex ">
+        <div className="w-full flex justify-between">
+          <Link
+            to={`/companyemployees`}
+            className="mx-3 font-semibold text-xl flex items-center"
+          >
+            <IoMdArrowBack className="w-8 h-8 mr-2" />
+            Go Back
+          </Link>
           <select
-            className=" mr-3 bg-white p-2 rounded-lg ml-auto text-2xl"
+            className=" mr-3 bg-white p-2 rounded-lg text-2xl"
             onChange={(e) => setYear(Number(e.target.value))}
             value={year}
           >
@@ -82,6 +90,7 @@ const EmployeeDetails = () => {
             ))}
           </select>
         </div>
+
         <h3 className="ml-3 text-xl font-bold text-[#3a4d8fe5]">
           Current Month
         </h3>

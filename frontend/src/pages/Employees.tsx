@@ -15,6 +15,8 @@ const Employees = () => {
   const { loading, fetchAllEmployees, employees, deleteEmployee } =
     useEmployee();
   const [showSideBar, setShowSideBar] = useState(false);
+  const year = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
   useEffect(() => {
     fetchAllEmployees();
   }, []);
@@ -71,40 +73,57 @@ const Employees = () => {
                   search: `?currentYear=${new Date().getFullYear()}`,
                 }}
                 key={employee.id}
-                className="bg-white my-1 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex justify-between"
+                className="bg-white my-1 rounded-lg p-2 text-[#3a4d8fe5] font-medium shadow-md flex flex-col justify-between"
               >
-                <div>
-                  <p>Name: {employee.name}</p>
-                  <p>Phone Number: {employee.phoneNumber}</p>
-                  <p>Joining Date: {format(employee.joinDate, "dd-MM-yyyy")}</p>
-                  <p>Status: {employee.status}</p>
-                  <p>
-                    HourlyRate:{" "}
-                    {employee.salaryHistory?.length
-                      ? employee.salaryHistory.map(
-                          (history) => history.hourlyRate
-                        )
-                      : "0"}
-                  </p>
+                <div className="flex w-full justify-between">
+                  <div>
+                    <p>Name: {employee.name}</p>
+                    <p>Phone Number: {employee.phoneNumber}</p>
+                    <p>
+                      Joining Date: {format(employee.joinDate, "dd-MM-yyyy")}
+                    </p>
+                    <p>Status: {employee.status}</p>
+                    <p>
+                      HourlyRate:{" "}
+                      {employee.salaryHistory?.length
+                        ? employee.salaryHistory.map(
+                            (history) => history.hourlyRate
+                          )
+                        : "0"}
+                    </p>
+                  </div>
+                  <div className="flex items-center">
+                    <FaRegEdit
+                      className="text-2xl mx-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        navigate(`/currentemployee/update/${employee.id}`);
+                      }}
+                    />
+                    <MdDelete
+                      className="text-2xl mx-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteHandler(employee.id);
+                      }}
+                    />
+                  </div>
                 </div>
-                <div className="flex mr-4 items-center">
-                  <FaRegEdit
-                    className="text-2xl mx-2"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      navigate(`/currentemployee/update/${employee.id}`);
-                    }}
-                  />
-                  <MdDelete
-                    className="text-2xl mx-2"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      deleteHandler(employee.id);
-                    }}
-                  />
-                </div>
+
+                <button
+                  className="text-lg font-semibold text-white bg-[#3a4d8fe5] w-full lg:w-4/5 px-4 py-1 my-2 mx-auto rounded-xl cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigate(
+                      `/${employee.id}/attendanceDetail/${year}/${currentMonth}`
+                    );
+                  }}
+                >
+                  Add Current Month Attendance
+                </button>
               </Link>
             ))}
           </div>
