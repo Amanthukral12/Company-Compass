@@ -1,9 +1,4 @@
-import express, {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  Response,
-} from "express";
+import express, { ErrorRequestHandler } from "express";
 import dotenv from "dotenv";
 import passport from "./config/passport";
 import cookieParser from "cookie-parser";
@@ -13,6 +8,8 @@ import authRoutes from "./routes/auth.routes";
 import employeeRoutes from "./routes/employee.routes";
 import attendanceRoutes from "./routes/attendance.routes";
 import { ApiError } from "./utils/ApiError";
+import PgSession from "connect-pg-simple";
+
 const app = express();
 dotenv.config();
 
@@ -20,8 +17,15 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+const PgStore = PgSession(session);
+
 app.use(
   session({
+    store: new PgStore({
+      conObject: {
+        connectionString: process.env.DATABASE_URL,
+      },
+    }),
     secret: process.env.SESSION_SECRET!,
     resave: false,
     saveUninitialized: false,
@@ -33,8 +37,6 @@ app.use(
   })
 );
 
-console.log(process.env.CORS_ORIGIN, process.env.SESSION_SECRET);
-
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -45,9 +47,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
 app.use("/", authRoutes);
 app.use("/employee", employeeRoutes);
 app.use("/attendance", attendanceRoutes);
+
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
