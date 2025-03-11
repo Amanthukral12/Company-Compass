@@ -25,6 +25,8 @@ app.use(
       conObject: {
         connectionString: process.env.DATABASE_URL,
       },
+      schemaName: "public",
+      tableName: "PgSession",
     }),
     secret: process.env.SESSION_SECRET!,
     resave: false,

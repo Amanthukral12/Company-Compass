@@ -40,6 +40,12 @@ model Session {
   company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
+model PgSession {
+  sid    String   @id
+  sess   Json
+  expire DateTime
+}
+
 model Employee {
   id            Int             @id @default(autoincrement())
   name          String
