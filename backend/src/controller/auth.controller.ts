@@ -8,7 +8,8 @@ import {
 import prisma from "../db/db";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
-
+import dotenv from "dotenv";
+dotenv.config();
 export const googleLoginSuccess = asyncHandler(
   async (req: any, res: Response) => {
     try {
@@ -30,6 +31,7 @@ export const googleLoginSuccess = asyncHandler(
         companyId: company.id,
         sessionId: session.sessionId,
       });
+      console.log(process.env.FRONTEND_URL);
       return res
         .status(200)
         .cookie("access_token", accessToken, {
