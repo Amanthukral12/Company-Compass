@@ -25,10 +25,15 @@ app.use(
     secret: process.env.SESSION_SECRET!,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    },
   })
 );
 
-console.log(process.env.CORS_ORIGIN);
+console.log(process.env.CORS_ORIGIN, process.env.SESSION_SECRET);
 
 app.use(
   cors({
