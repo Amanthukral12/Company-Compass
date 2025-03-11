@@ -74,7 +74,11 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   useEffect(() => {
-    fetchCompanyData();
+    if (authState.isAuthenticated) {
+      fetchCompanyData();
+    } else {
+      authDispatch({ type: "LOGOUT" }); // Reset state properly
+    }
   }, [authState.isAuthenticated]);
   return (
     <AuthContext.Provider
