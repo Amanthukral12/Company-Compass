@@ -13,7 +13,9 @@ dotenv.config();
 export const googleLoginSuccess = asyncHandler(
   async (req: any, res: Response) => {
     try {
+      console.log("a");
       const { company } = req.user;
+      console.log(company);
       const deviceInfo = req.deviceInfo;
       const refreshToken = generateRefreshToken({
         sessionId: req.user.sessionId,
