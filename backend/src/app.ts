@@ -47,13 +47,13 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
-
 app.use("/", authRoutes);
 app.use("/employee", employeeRoutes);
 app.use("/attendance", attendanceRoutes);
+
+app.get("/test", (req, res) => {
+  res.send("API is running...");
+});
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (res.headersSent) {
