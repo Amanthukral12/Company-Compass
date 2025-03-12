@@ -24,7 +24,7 @@ const Home = () => {
     return <Loading />;
   }
   return (
-    <div className="bg-[#edf7fd] bg-cover min-h-screen lg:h-screen overflow-hidden flex flex-col lg:flex-row w-full">
+    <div className="bg-[#edf7fd] bg-cover h-screen overflow-hidden flex flex-col lg:flex-row w-full">
       <div className="w-0 lg:w-1/5 z-5">
         <NavigationBar />
       </div>
@@ -35,10 +35,13 @@ const Home = () => {
             showSideBar ? "hidden" : ""
           }`}
         />
+        <Sidebar
+          shown={showSideBar}
+          close={() => setShowSideBar(!showSideBar)}
+        />
       </div>
-      <Sidebar shown={showSideBar} close={() => setShowSideBar(!showSideBar)} />
 
-      <section className="w-full lg:w-4/5 overflow-y-auto h-full mb-16">
+      <section className="w-full lg:w-4/5 overflow-y-auto h-full">
         <CompanyHeader />
         <div className="w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {employeesWithAttendance?.map((employee: EmployeesWithAttendance) => (
