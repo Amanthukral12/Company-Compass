@@ -27,7 +27,7 @@ const CompanyHeader = () => {
         )}
       </div>
       <div className="w-4/5">
-        <p className="text-4xl text-[#3a4d8fe5] font-bold mb-2">
+        <p className="text-xl lg:text-4xl text-[#3a4d8fe5] font-semibold mb-2">
           Company Name: {company?.name}
         </p>
         <p className="text-lg text-[#3a4d8fe5] font-semibold my-1">

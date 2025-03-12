@@ -7,7 +7,7 @@ import { AuthContext } from "./AuthContext";
 const initialState: AuthState = {
   company: null,
   isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
-  loading: true,
+  loading: false,
   error: null,
   session: null,
   sessions: null,
@@ -73,12 +73,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log(error);
     }
   };
+  console.log(authState.isAuthenticated);
   useEffect(() => {
-    if (authState.isAuthenticated) {
-      fetchCompanyData();
-    } else {
-      authDispatch({ type: "LOGOUT" }); // Reset state properly
-    }
+    fetchCompanyData();
   }, [authState.isAuthenticated]);
   return (
     <AuthContext.Provider

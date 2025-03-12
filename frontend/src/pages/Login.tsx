@@ -51,7 +51,7 @@ const Login = () => {
         <p className="text-sm text-slate-600 text-center">
           Secure login for company registration and employee management
         </p>
-        <p className="text-sm text-slate-500 absolute bottom-10">
+        <p className="text-sm text-slate-500 absolute bottom-10 text-center">
           © {currentYear} Company Compass. All rights reserved.
         </p>
       </main>

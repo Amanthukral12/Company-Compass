@@ -9,7 +9,6 @@ export const authReducer = (
       return {
         ...state,
         loading: true,
-        isAuthenticated: true,
         error: null,
       };
     case "LOGIN_SUCCESS":
