@@ -24,7 +24,7 @@ const Home = () => {
     return <Loading />;
   }
   return (
-    <div className="bg-[#edf7fd] bg-cover min-h-screen lg:h-screen overflow-hidden flex flex-col lg:flex-row w-full">
+    <div className="bg-[#edf7fd] bg-cover min-h-screen lg:h-screen overflow-hidden flex flex-col lg:flex-row w-full text-[#3a4d8fe5]">
       <div className="w-0 lg:w-1/5 z-5">
         <NavigationBar />
       </div>
