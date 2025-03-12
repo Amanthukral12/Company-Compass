@@ -14,12 +14,12 @@ const Sidebar = ({ shown, close }: { shown: boolean; close: () => void }) => {
       onClick={() => close()}
     >
       <div
-        className="bg-[#D9D9D9] absolute top-0 left-0 w-1/2 min-h-screen p-2 rounded-lg flex flex-col items-center backdrop:blur-sm"
+        className="bg-[#D9D9D9] absolute top-0 left-0 w-3/5 min-h-screen p-2 rounded-lg flex flex-col items-center backdrop:blur-sm"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col justify-center items-center my-7">
           <Logo className="w-1/2 rounded-3xl " />
-          <h1 className="text-2xl font-bold text-[#3a4d8fe5]">
+          <h1 className="text-lg lg:text-2xl mt-4 font-bold text-[#3a4d8fe5]">
             Company Compass
           </h1>
         </div>
@@ -69,10 +69,10 @@ const Sidebar = ({ shown, close }: { shown: boolean; close: () => void }) => {
         >
           <img
             src={company?.avatar || undefined}
-            className="rounded-full h-16 w-16 mr-3"
+            className="rounded-full h-12 w-12"
             alt=""
           />
-          <h2 className="text-xl text-[#3a4d8fe5] font-bold cursor-pointer">
+          <h2 className="text-md text-[#3a4d8fe5] font-bold cursor-pointer">
             {company?.name}
           </h2>
           <ProfilePopup

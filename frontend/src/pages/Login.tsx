@@ -15,16 +15,18 @@ const Login = () => {
 
   return (
     <div className="bg-[#cae9ff] min-h-screen flex items-center justify-center">
-      <main className="h-[60vh] w-4/5 lg:w-1/4 bg-white shadow-2xl rounded-4xl p-4 flex flex-col items-center relative">
+      <main className="h-[80vh] lg:h-[80vh] w-4/5 lg:w-2/5 bg-white shadow-2xl rounded-4xl p-4 flex flex-col items-center relative">
         <Logo className="w-1/2" />
-        <h1 className="font-bold text-2xl lg:text-4xl mb-4">Company Compass</h1>
+        <h1 className="font-bold text-xl md:text-2xl lg:text-4xl mb-4">
+          Company Compass
+        </h1>
         <h3 className="font-semibold text-lg lg:text-xl my-2">Welcome back</h3>
         <p className="text-sm lg:text-base text-slate-600">
           Access your workforce management portal
         </p>
         <button
           onClick={() => onSubmit()}
-          className="w-4/5 flex items-center justify-center px-4 py-1 border border-gray-300 rounded-lg mt-4 mb-6 focus:outline-none"
+          className="w-4/5 flex items-center justify-center px-4 py-1 border border-gray-300 rounded-lg mt-4 mb-6 cursor-pointer focus:outline-none"
         >
           <svg viewBox="0 0 48 48" className="h-5 w-5 sm:h-6 sm:w-6 mr-1">
             <path
