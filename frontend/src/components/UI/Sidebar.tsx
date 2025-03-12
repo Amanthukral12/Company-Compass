@@ -14,7 +14,7 @@ const Sidebar = ({ shown, close }: { shown: boolean; close: () => void }) => {
       onClick={() => close()}
     >
       <div
-        className="bg-[#D9D9D9] absolute top-0 left-0 w-3/5 min-h-screen p-2 rounded-lg flex flex-col items-center backdrop:blur-sm"
+        className="bg-[#D9D9D9] absolute top-0 left-0 w-3/5 min-h-[98vh] p-2 rounded-lg flex flex-col items-center backdrop:blur-sm"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col justify-center items-center my-7">
