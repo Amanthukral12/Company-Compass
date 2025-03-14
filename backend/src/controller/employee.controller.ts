@@ -111,7 +111,7 @@ export const getEmployeeOverView = asyncHandler(
         LEFT JOIN SalaryRates S
         ON A."employeeId" = S."employeeId"
         AND A.date BETWEEN S."startDate" AND S."endDate"
-        WHERE A."employeeId" = 1
+        WHERE A."employeeId" = ${Number(employeeId)}
         AND EXTRACT(YEAR FROM A.date) = ${currentYear}
         GROUP BY DATE_TRUNC('month', A.date), EXTRACT(MONTH FROM A.date)
         ORDER BY EXTRACT(MONTH FROM A.date);
