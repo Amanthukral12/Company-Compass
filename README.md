@@ -4,7 +4,7 @@ Workforce Management & Payroll System
 📌 A full-stack web application to manage employees, track attendance, and generate salaries seamlessly.
 
 ## Demo
-LIVE DEMO: https://company-compass.netlify.app/login
+LIVE DEMO: (https://aboutcompanycompass.netlify.app/)
 
 ## 🚀 Features
 ✔️ User Authentication
